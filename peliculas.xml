@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Peliculas>
+    <pelicula>
+        <Titulo>El rey leon</Titulo>
+        <Director>Un señor raro</Director>
+        <Anio>1994</Anio>
+        <Duracion>88</Duracion>
+        <Genero>animacion</Genero>
+        <Sinopsis>Un pendejo sin ambicion</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <Titulo>caca con patas</Titulo>
+        <Director>nose</Director>
+        <Anio>235</Anio>
+        <Duracion>345</Duracion>
+        <Genero>jaja</Genero>
+        <Sinopsis>khe </Sinopsis>
+    </pelicula>
+</Peliculas>
