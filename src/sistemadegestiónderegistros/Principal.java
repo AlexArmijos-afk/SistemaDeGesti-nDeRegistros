@@ -8,15 +8,20 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
@@ -40,107 +45,122 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public Principal() {
-        try {
             initComponents();
 
-            SAXParserFactory.newInstance().newSAXParser().parse(
-                    new File("peliculas.xml"),
-                    new DefaultHandler() {
+            leerXML(new File("peliculas.xml"));
 
-                Pelicula actual;
-
-                boolean titulo;
-                boolean director;
-                boolean anio;
-                boolean duracion;
-                boolean genero;
-                boolean sinopsis;
-
-                @Override
-                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-
-                    if (qName.equalsIgnoreCase("pelicula")) {
-                        actual = new Pelicula();
-                    }
-
-                    if (qName.equalsIgnoreCase("Titulo")) {
-                        titulo = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Director")) {
-                        director = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Anio")) {
-                        anio = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Duracion")) {
-                        duracion = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Genero")) {
-                        genero = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Sinopsis")) {
-                        sinopsis = true;
-                    }
-                }
-
-                @Override
-                public void characters(char[] ch, int start, int length) throws SAXException {
-
-                    String texto = new String(ch, start, length).trim();
-                    if (texto.isEmpty()) {
-                        return;
-                    }
-
-                    if (titulo) {
-                        actual.setTitulo(texto);
-                        titulo = false;
-                    }
-
-                    if (director) {
-                        actual.setDirector(texto);
-                        director = false;
-                    }
-
-                    if (anio) {
-                        actual.setAnio(Integer.parseInt(texto));
-                        anio = false;
-                    }
-
-                    if (duracion) {
-                        actual.setDuracion(Integer.parseInt(texto));
-                        duracion = false;
-                    }
-
-                    if (genero) {
-                        actual.setGenero(texto);
-                        genero = false;
-                    }
-
-                    if (sinopsis) {
-                        actual.setSinopsis(texto);
-                        sinopsis = false;
-                    }
-                }
-
-                @Override
-                public void endElement(String uri, String localName, String qName) throws SAXException {
-                    if (qName.equalsIgnoreCase("pelicula")) {
-                        peliculas.add(actual);
-                    }
-                }
-
-            }
-            );
-
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             cargarLista();
+    }
+
+    public void leerXML(File archivo){
+        try {
+            if (archivo.exists()) {
+                
+            SAXParserFactory.newInstance().newSAXParser().parse(
+                    archivo,
+                    new DefaultHandler() {
+                        
+                        Pelicula actual;
+                        
+                        boolean titulo;
+                        boolean director;
+                        boolean anio;
+                        boolean duracion;
+                        boolean genero;
+                        boolean sinopsis;
+                        
+                        @Override
+                        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                            
+                            if (qName.equalsIgnoreCase("pelicula")) {
+                                actual = new Pelicula();
+                            }
+                            
+                            if (qName.equalsIgnoreCase("Titulo")) {
+                                titulo = true;
+                            }
+                            
+                            if (qName.equalsIgnoreCase("Director")) {
+                                director = true;
+                            }
+                            
+                            if (qName.equalsIgnoreCase("Anio")) {
+                                anio = true;
+                            }
+                            
+                            if (qName.equalsIgnoreCase("Duracion")) {
+                                duracion = true;
+                            }
+                            
+                            if (qName.equalsIgnoreCase("Genero")) {
+                                genero = true;
+                            }
+                            
+                            if (qName.equalsIgnoreCase("Sinopsis")) {
+                                sinopsis = true;
+                            }
+                        }
+                        
+                        @Override
+                        public void characters(char[] ch, int start, int length) throws SAXException {
+                            
+                            String texto = new String(ch, start, length).trim();
+                            if (texto.isEmpty()) {
+                                return;
+                            }
+                            
+                            if (titulo) {
+                                actual.setTitulo(texto);
+                                titulo = false;
+                            }
+                            
+                            if (director) {
+                                actual.setDirector(texto);
+                                director = false;
+                            }
+                            
+                            if (anio) {
+                                actual.setAnio(Integer.parseInt(texto));
+                                anio = false;
+                            }
+                            
+                            if (duracion) {
+                                actual.setDuracion(Integer.parseInt(texto));
+                                duracion = false;
+                            }
+                            
+                            if (genero) {
+                                actual.setGenero(texto);
+                                genero = false;
+                            }
+                            
+                            if (sinopsis) {
+                                actual.setSinopsis(texto);
+                                sinopsis = false;
+                            }
+                        }
+                        
+                        @Override
+                        public void endElement(String uri, String localName, String qName) throws SAXException {
+                            if (qName.equalsIgnoreCase("pelicula")) {
+                                peliculas.add(actual);
+                            }
+                        }
+                        
+                    }
+            );
+            }else{
+                JOptionPane.showMessageDialog(this, "Error al leer el archivo "+archivo.getName());
+                System.out.println("Error");
+            }
+        } catch (ParserConfigurationException ex) {
+            System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (SAXException ex) {
+            System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (IOException ex) {
+            System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 
     /**
@@ -195,6 +215,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         bExportar.setText("Exportar");
+        bExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bExportarActionPerformed(evt);
+            }
+        });
 
         bEliminar.setText("Eliminar");
         bEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -293,59 +318,79 @@ public class Principal extends javax.swing.JFrame {
 
     private void bImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bImportarActionPerformed
         JFileChooser selector = new JFileChooser(".");
-        selector.showOpenDialog(this);
+        selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int respuesta = selector.showOpenDialog(this);
+        if (respuesta == JFileChooser.APPROVE_OPTION) {
+            leerXML(selector.getSelectedFile());
+            cargarLista();
+        }
     }//GEN-LAST:event_bImportarActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+            escribirXML(new File("peliculas.xml"));
+    }//GEN-LAST:event_formWindowClosing
+
+    private void bExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportarActionPerformed
+        JFileChooser selector = new JFileChooser(".");
+        int respuesta = selector.showSaveDialog(this);
+        if (respuesta == JFileChooser.APPROVE_OPTION) {
+//            String nombre = selector.getF
+//            escribirXML();
+        }
+    }//GEN-LAST:event_bExportarActionPerformed
+
+    public void escribirXML(File archivoSalida){
         try {
-            File aPeliculas = new File("peliculas.xml");
-            if (aPeliculas.createNewFile()) {
-                System.out.println("Archivo peliculas.xml creado");
-            }
-
-            Document dpeliculas = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-
-            Element raiz = dpeliculas.createElement("Peliculas");
-            dpeliculas.appendChild(raiz);
-            for (Pelicula p : peliculas) {
-                Element pelicula = dpeliculas.createElement("pelicula");
-                raiz.appendChild(pelicula);
-
-                Element titulo = dpeliculas.createElement("Titulo");
-                titulo.setTextContent(p.getTitulo());
-                pelicula.appendChild(titulo);
-
-                Element director = dpeliculas.createElement("Director");
-                director.setTextContent(p.getDirector());
-                pelicula.appendChild(director);
-
-                Element anio = dpeliculas.createElement("Anio");
-                anio.setTextContent(String.valueOf(p.getAnio()));
-                pelicula.appendChild(anio);
-
-                Element duracion = dpeliculas.createElement("Duracion");
-                duracion.setTextContent(String.valueOf(p.getDuracion()));
-                pelicula.appendChild(duracion);
-
-                Element genero = dpeliculas.createElement("Genero");
-                genero.setTextContent(p.getGenero());
-                pelicula.appendChild(genero);
-
-                Element sinopsis = dpeliculas.createElement("Sinopsis");
-                sinopsis.setTextContent(p.getSinopsis());
-                pelicula.appendChild(sinopsis);
-
-            }
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.transform(new DOMSource(dpeliculas), new StreamResult(aPeliculas));
+        
+        File aPeliculas = archivoSalida;
+        if (aPeliculas.createNewFile()) {
+            System.out.println("Archivo peliculas.xml creado");
+        }
+        
+        Document dpeliculas = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        
+        Element raiz = dpeliculas.createElement("Peliculas");
+        dpeliculas.appendChild(raiz);
+        for (Pelicula p : peliculas) {
+            Element pelicula = dpeliculas.createElement("pelicula");
+            raiz.appendChild(pelicula);
+            
+            Element titulo = dpeliculas.createElement("Titulo");
+            titulo.setTextContent(p.getTitulo());
+            pelicula.appendChild(titulo);
+            
+            Element director = dpeliculas.createElement("Director");
+            director.setTextContent(p.getDirector());
+            pelicula.appendChild(director);
+            
+            Element anio = dpeliculas.createElement("Anio");
+            anio.setTextContent(String.valueOf(p.getAnio()));
+            pelicula.appendChild(anio);
+            
+            Element duracion = dpeliculas.createElement("Duracion");
+            duracion.setTextContent(String.valueOf(p.getDuracion()));
+            pelicula.appendChild(duracion);
+            
+            Element genero = dpeliculas.createElement("Genero");
+            genero.setTextContent(p.getGenero());
+            pelicula.appendChild(genero);
+            
+            Element sinopsis = dpeliculas.createElement("Sinopsis");
+            sinopsis.setTextContent(p.getSinopsis());
+            pelicula.appendChild(sinopsis);
+            
+        }
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.transform(new DOMSource(dpeliculas), new StreamResult(aPeliculas));
         } catch (IOException ex) {
-            new JDialog(this, "Error al crear el archivo peliculas.xml");
+            new JOptionPane("Error al crear el archivo"+archivoSalida.getName(), JOptionPane.ERROR_MESSAGE).setVisible(true);
 
         } catch (ParserConfigurationException | TransformerException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_formWindowClosing
+        }
+        
 
     /**
      * @param args the command line arguments
