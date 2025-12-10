@@ -1,8 +1,12 @@
 package sistemadegestiónderegistros;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.awt.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -45,113 +49,113 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public Principal() {
-            initComponents();
+        initComponents();
 
-            leerXML(new File("peliculas.xml"));
+        leerXML(new File("peliculas.xml"));
 
-        
-            cargarLista();
+        cargarLista(peliculas);
     }
 
-    public void leerXML(File archivo){
+    public void leerXML(File archivo) {
+        
         try {
             if (archivo.exists()) {
-                
-            SAXParserFactory.newInstance().newSAXParser().parse(
-                    archivo,
-                    new DefaultHandler() {
-                        
-                        Pelicula actual;
-                        
-                        boolean titulo;
-                        boolean director;
-                        boolean anio;
-                        boolean duracion;
-                        boolean genero;
-                        boolean sinopsis;
-                        
-                        @Override
-                        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-                            
-                            if (qName.equalsIgnoreCase("pelicula")) {
-                                actual = new Pelicula();
-                            }
-                            
-                            if (qName.equalsIgnoreCase("Titulo")) {
-                                titulo = true;
-                            }
-                            
-                            if (qName.equalsIgnoreCase("Director")) {
-                                director = true;
-                            }
-                            
-                            if (qName.equalsIgnoreCase("Anio")) {
-                                anio = true;
-                            }
-                            
-                            if (qName.equalsIgnoreCase("Duracion")) {
-                                duracion = true;
-                            }
-                            
-                            if (qName.equalsIgnoreCase("Genero")) {
-                                genero = true;
-                            }
-                            
-                            if (qName.equalsIgnoreCase("Sinopsis")) {
-                                sinopsis = true;
-                            }
+
+                SAXParserFactory.newInstance().newSAXParser().parse(
+                        archivo,
+                        new DefaultHandler() {
+
+                    Pelicula actual;
+
+                    boolean titulo;
+                    boolean director;
+                    boolean anio;
+                    boolean duracion;
+                    boolean genero;
+                    boolean sinopsis;
+
+                    @Override
+                    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+
+                        if (qName.equalsIgnoreCase("pelicula")) {
+                            actual = new Pelicula();
                         }
-                        
-                        @Override
-                        public void characters(char[] ch, int start, int length) throws SAXException {
-                            
-                            String texto = new String(ch, start, length).trim();
-                            if (texto.isEmpty()) {
-                                return;
-                            }
-                            
-                            if (titulo) {
-                                actual.setTitulo(texto);
-                                titulo = false;
-                            }
-                            
-                            if (director) {
-                                actual.setDirector(texto);
-                                director = false;
-                            }
-                            
-                            if (anio) {
-                                actual.setAnio(Integer.parseInt(texto));
-                                anio = false;
-                            }
-                            
-                            if (duracion) {
-                                actual.setDuracion(Integer.parseInt(texto));
-                                duracion = false;
-                            }
-                            
-                            if (genero) {
-                                actual.setGenero(texto);
-                                genero = false;
-                            }
-                            
-                            if (sinopsis) {
-                                actual.setSinopsis(texto);
-                                sinopsis = false;
-                            }
+
+                        if (qName.equalsIgnoreCase("Titulo")) {
+                            titulo = true;
                         }
-                        
-                        @Override
-                        public void endElement(String uri, String localName, String qName) throws SAXException {
-                            if (qName.equalsIgnoreCase("pelicula")) {
-                                peliculas.add(actual);
-                            }
+
+                        if (qName.equalsIgnoreCase("Director")) {
+                            director = true;
                         }
-                        
+
+                        if (qName.equalsIgnoreCase("Anio")) {
+                            anio = true;
+                        }
+
+                        if (qName.equalsIgnoreCase("Duracion")) {
+                            duracion = true;
+                        }
+
+                        if (qName.equalsIgnoreCase("Genero")) {
+                            genero = true;
+                        }
+
+                        if (qName.equalsIgnoreCase("Sinopsis")) {
+                            sinopsis = true;
+                        }
                     }
-            );
-            }else{
-                JOptionPane.showMessageDialog(this, "Error al leer el archivo "+archivo.getName());
+
+                    @Override
+                    public void characters(char[] ch, int start, int length) throws SAXException {
+
+                        String texto = new String(ch, start, length).trim();
+                        if (texto.isEmpty()) {
+                            return;
+                        }
+
+                        if (titulo) {
+                            actual.setTitulo(texto);
+                            titulo = false;
+                        }
+
+                        if (director) {
+                            actual.setDirector(texto);
+                            director = false;
+                        }
+
+                        if (anio) {
+                            actual.setAnio(Integer.parseInt(texto));
+                            anio = false;
+                        }
+
+                        if (duracion) {
+                            actual.setDuracion(Integer.parseInt(texto));
+                            duracion = false;
+                        }
+
+                        if (genero) {
+                            actual.setGenero(texto);
+                            genero = false;
+                        }
+
+                        if (sinopsis) {
+                            actual.setSinopsis(texto);
+                            sinopsis = false;
+                        }
+                    }
+
+                    @Override
+                    public void endElement(String uri, String localName, String qName) throws SAXException {
+                        if (qName.equalsIgnoreCase("pelicula")) {
+                            peliculas.add(actual);
+                        }
+                    }
+
+                }
+                );
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al leer el archivo " + archivo.getName());
                 System.out.println("Error");
             }
         } catch (ParserConfigurationException ex) {
@@ -179,6 +183,8 @@ public class Principal extends javax.swing.JFrame {
         bExportar = new javax.swing.JButton();
         bEliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        tBuscar = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -230,40 +236,56 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setText("Mis peliculas");
 
+        tBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tBuscarKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tBuscarKeyTyped(evt);
+            }
+        });
+
+        jLabel2.setText("Buscar:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(bEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bImportar)
+                    .addComponent(bExportar))
+                .addGap(50, 50, 50))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(30, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(77, 77, 77)
-                                .addComponent(bNuevaPeli))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(bEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bImportar)
-                            .addComponent(bExportar))
-                        .addGap(22, 22, 22)))
+                    .addComponent(bNuevaPeli)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(tBuscar))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(29, 29, 29))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(163, 163, 163)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(bNuevaPeli))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabel1)))
+                .addGap(27, 27, 27)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bNuevaPeli)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -272,7 +294,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(bEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bExportar)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -285,7 +307,7 @@ public class Principal extends javax.swing.JFrame {
 
         peliculas.add(p.getPeliculaEnvio());
 
-        cargarLista();
+        cargarLista(peliculas);
     }//GEN-LAST:event_bNuevaPeliActionPerformed
 
     private void jlPeliculaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlPeliculaMouseClicked
@@ -295,25 +317,25 @@ public class Principal extends javax.swing.JFrame {
             System.out.println(p.getEliminar());
             if (!p.getEliminar()) {
                 peliculas.set(jlPelicula.getSelectedIndex(), p.getPeliculaEnvio());
-                cargarLista();
+                cargarLista(peliculas);
             } else {
                 peliculas.remove(jlPelicula.getSelectedIndex());
-                cargarLista();
+                cargarLista(peliculas);
             }
         }
     }//GEN-LAST:event_jlPeliculaMouseClicked
 
-    public void cargarLista() {
+    public void cargarLista(ArrayList<Pelicula> array) {
         DefaultListModel modelo = new DefaultListModel();
         modelo.setSize(0);
-        modelo.addAll(peliculas);
+        modelo.addAll(array);
 
         jlPelicula.setModel(modelo);
     }
 
     private void bEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarActionPerformed
         peliculas.remove(jlPelicula.getSelectedIndex());
-        cargarLista();
+        cargarLista(peliculas);
     }//GEN-LAST:event_bEliminarActionPerformed
 
     private void bImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bImportarActionPerformed
@@ -321,76 +343,117 @@ public class Principal extends javax.swing.JFrame {
         selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int respuesta = selector.showOpenDialog(this);
         if (respuesta == JFileChooser.APPROVE_OPTION) {
-            leerXML(selector.getSelectedFile());
-            cargarLista();
+            if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".xml")) {
+                leerXML(selector.getSelectedFile());
+            }else if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".json")) {
+                try {
+                    ObjectMapper mapeador = new ObjectMapper();
+                    
+                    List<Map<String, Object>> json =mapeador.readValue(selector.getSelectedFile(),new TypeReference<List<Map<String,Object>>>() {});
+                    for (Map<String, Object> elem : json) {
+                        String titulo = (String) elem.get("Titulo");
+                        String director = (String) elem.get("Titulo");
+                        System.out.println(titulo );
+
+//   /private int anio= (String) json.get("Titulo");
+//
+//    private String id;
+//    
+//    private int duracion;
+//    
+//    private String genero;
+//    
+//    private String sinopsis
+                    }
+                    
+                } catch (IOException ex) {
+                    System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
+            }
+            cargarLista(peliculas);
         }
     }//GEN-LAST:event_bImportarActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-            escribirXML(new File("peliculas.xml"));
+        escribirXML(new File("peliculas.xml"));
     }//GEN-LAST:event_formWindowClosing
 
     private void bExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportarActionPerformed
         JFileChooser selector = new JFileChooser(".");
+        selector.setSelectedFile(new File("prueba"));
         int respuesta = selector.showSaveDialog(this);
         if (respuesta == JFileChooser.APPROVE_OPTION) {
-//            String nombre = selector.getF
-//            escribirXML();
+            File archivoNuevo = new File(selector.getSelectedFile() + ".xml");
+            escribirXML(archivoNuevo);
         }
     }//GEN-LAST:event_bExportarActionPerformed
 
-    public void escribirXML(File archivoSalida){
+    private void tBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tBuscarKeyTyped
+        
+    }//GEN-LAST:event_tBuscarKeyTyped
+
+    private void tBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tBuscarKeyReleased
+        ArrayList<Pelicula> encontradas = new ArrayList<>();
+        for (Pelicula encontrada : peliculas) {
+            if (encontrada.getTitulo().toLowerCase().contains(tBuscar.getText().toLowerCase())) {
+                encontradas.add(encontrada);
+                cargarLista(encontradas);
+            }
+        }
+    }//GEN-LAST:event_tBuscarKeyReleased
+
+    public void escribirXML(File archivoSalida) {
         try {
-        
-        File aPeliculas = archivoSalida;
-        if (aPeliculas.createNewFile()) {
-            System.out.println("Archivo peliculas.xml creado");
-        }
-        
-        Document dpeliculas = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-        
-        Element raiz = dpeliculas.createElement("Peliculas");
-        dpeliculas.appendChild(raiz);
-        for (Pelicula p : peliculas) {
-            Element pelicula = dpeliculas.createElement("pelicula");
-            raiz.appendChild(pelicula);
-            
-            Element titulo = dpeliculas.createElement("Titulo");
-            titulo.setTextContent(p.getTitulo());
-            pelicula.appendChild(titulo);
-            
-            Element director = dpeliculas.createElement("Director");
-            director.setTextContent(p.getDirector());
-            pelicula.appendChild(director);
-            
-            Element anio = dpeliculas.createElement("Anio");
-            anio.setTextContent(String.valueOf(p.getAnio()));
-            pelicula.appendChild(anio);
-            
-            Element duracion = dpeliculas.createElement("Duracion");
-            duracion.setTextContent(String.valueOf(p.getDuracion()));
-            pelicula.appendChild(duracion);
-            
-            Element genero = dpeliculas.createElement("Genero");
-            genero.setTextContent(p.getGenero());
-            pelicula.appendChild(genero);
-            
-            Element sinopsis = dpeliculas.createElement("Sinopsis");
-            sinopsis.setTextContent(p.getSinopsis());
-            pelicula.appendChild(sinopsis);
-            
-        }
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.transform(new DOMSource(dpeliculas), new StreamResult(aPeliculas));
+
+            File aPeliculas = archivoSalida;
+            if (aPeliculas.createNewFile()) {
+                System.out.println("Archivo "+archivoSalida.getName()+" creado");
+                JOptionPane.showMessageDialog(this, "Archivo "+archivoSalida.getName()+" creado");
+            }
+
+            Document dpeliculas = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+
+            Element raiz = dpeliculas.createElement("Peliculas");
+            dpeliculas.appendChild(raiz);
+            for (Pelicula p : peliculas) {
+                Element pelicula = dpeliculas.createElement("pelicula");
+                raiz.appendChild(pelicula);
+
+                Element titulo = dpeliculas.createElement("Titulo");
+                titulo.setTextContent(p.getTitulo());
+                pelicula.appendChild(titulo);
+
+                Element director = dpeliculas.createElement("Director");
+                director.setTextContent(p.getDirector());
+                pelicula.appendChild(director);
+
+                Element anio = dpeliculas.createElement("Anio");
+                anio.setTextContent(String.valueOf(p.getAnio()));
+                pelicula.appendChild(anio);
+
+                Element duracion = dpeliculas.createElement("Duracion");
+                duracion.setTextContent(String.valueOf(p.getDuracion()));
+                pelicula.appendChild(duracion);
+
+                Element genero = dpeliculas.createElement("Genero");
+                genero.setTextContent(p.getGenero());
+                pelicula.appendChild(genero);
+
+                Element sinopsis = dpeliculas.createElement("Sinopsis");
+                sinopsis.setTextContent(p.getSinopsis());
+                pelicula.appendChild(sinopsis);
+
+            }
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.transform(new DOMSource(dpeliculas), new StreamResult(aPeliculas));
         } catch (IOException ex) {
-            new JOptionPane("Error al crear el archivo"+archivoSalida.getName(), JOptionPane.ERROR_MESSAGE).setVisible(true);
+            new JOptionPane("Error al crear el archivo" + archivoSalida.getName(), JOptionPane.ERROR_MESSAGE).setVisible(true);
 
         } catch (ParserConfigurationException | TransformerException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        }
-        
+    }
 
     /**
      * @param args the command line arguments
@@ -423,7 +486,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton bImportar;
     private javax.swing.JButton bNuevaPeli;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> jlPelicula;
+    private javax.swing.JTextField tBuscar;
     // End of variables declaration//GEN-END:variables
 }
