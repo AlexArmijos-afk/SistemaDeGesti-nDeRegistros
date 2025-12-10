@@ -2,30 +2,25 @@ package sistemadegestiónderegistros;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.awt.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
@@ -346,29 +341,7 @@ public class Principal extends javax.swing.JFrame {
             if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".xml")) {
                 leerXML(selector.getSelectedFile());
             }else if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".json")) {
-                try {
-                    ObjectMapper mapeador = new ObjectMapper();
-                    
-                    List<Map<String, Object>> json =mapeador.readValue(selector.getSelectedFile(),new TypeReference<List<Map<String,Object>>>() {});
-                    for (Map<String, Object> elem : json) {
-                        String titulo = (String) elem.get("Titulo");
-                        String director = (String) elem.get("Titulo");
-                        System.out.println(titulo );
-
-//   /private int anio= (String) json.get("Titulo");
-//
-//    private String id;
-//    
-//    private int duracion;
-//    
-//    private String genero;
-//    
-//    private String sinopsis
-                    }
-                    
-                } catch (IOException ex) {
-                    System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-                }
+                
             }
             cargarLista(peliculas);
         }
