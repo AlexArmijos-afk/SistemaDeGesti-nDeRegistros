@@ -1,5 +1,6 @@
 package sistemadegestiónderegistros;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -341,7 +342,7 @@ public class Principal extends javax.swing.JFrame {
             if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".xml")) {
                 leerXML(selector.getSelectedFile());
             }else if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".json")) {
-                
+                leerJSON(selector.getSelectedFile());
             }
             cargarLista(peliculas);
         }
@@ -355,9 +356,14 @@ public class Principal extends javax.swing.JFrame {
         JFileChooser selector = new JFileChooser(".");
         selector.setSelectedFile(new File("prueba"));
         int respuesta = selector.showSaveDialog(this);
+        
+//        if (respuesta == JFileChooser.APPROVE_OPTION) {
+//            File archivoNuevo = new File(selector.getSelectedFile() + ".xml");
+//            escribirXML(archivoNuevo);
+//        }
         if (respuesta == JFileChooser.APPROVE_OPTION) {
-            File archivoNuevo = new File(selector.getSelectedFile() + ".xml");
-            escribirXML(archivoNuevo);
+            File archivoNuevo = new File(selector.getSelectedFile() + ".json");
+            escribirJSON(archivoNuevo);
         }
     }//GEN-LAST:event_bExportarActionPerformed
 
@@ -428,6 +434,52 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    public void escribirJSON(File archivoSalida){   
+        try {
+            File aPeliculas = archivoSalida; 
+        
+            if (aPeliculas.createNewFile()) {
+                System.out.println("Archivo " + archivoSalida.getName() + " creado");
+                JOptionPane.showMessageDialog(this, "Archivo " + archivoSalida.getName() + " creado");
+            }
+
+            ObjectMapper mapeador = new ObjectMapper();
+            mapeador.writeValue(archivoSalida, peliculas);
+            
+        } catch (JsonProcessingException ex) {
+            System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }catch (IOException ex) {
+            System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        
+    }
+    }
+    
+    public void leerJSON(File archivoEntrada){
+        if(archivoEntrada.exists()){
+            ObjectMapper mapeador = new ObjectMapper();
+            try {
+                List<Map<String, Object>> pelis = mapeador.readValue(archivoEntrada, new TypeReference<List<Map<String, Object>>>(){});
+                for (Map<String, Object> peli : pelis) {
+                    String titulo = (String) peli.get("titulo");
+                    String director = (String) peli.get("director");
+                    int anio = (int) peli.get("anio");
+                    String id = (String) peli.get("id");
+                    int duracion = (int) peli.get("duracion");
+                    String genero =(String) peli.get("genero");
+                    String sinopsis = (String) peli.get("sinopsis");
+                    
+                    Pelicula peliNueva = new Pelicula(titulo, director, anio, id, duracion, genero, sinopsis);
+                    peliculas.add(peliNueva);
+                }
+                
+            } catch (IOException ex) {
+                System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }else {
+            JOptionPane.showMessageDialog(this, "Error al leer el archivo " + archivoEntrada.getName());
+            System.out.println("Error");
+        }
+    }
     /**
      * @param args the command line arguments
      */

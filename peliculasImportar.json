@@ -1,0 +1,48 @@
+[
+  {
+    "titulo": "El Rey León",
+    "director": "Roger Allers y Rob Minkoff",
+    "anio": 1994,
+    "id": null,
+    "duracion": 88,
+    "genero": "Animación",
+    "sinopsis": "Simba, un joven león destinado a ser rey, debe enfrentar la traición y encontrar su camino para reclamar su lugar en el reino."
+  },
+  {
+    "titulo": "La Bella y la Bestia",
+    "director": "Gary Trousdale y Kirk Wise",
+    "anio": 1991,
+    "id": null,
+    "duracion": 84,
+    "genero": "Animación",
+    "sinopsis": "Una joven llamada Bella descubre que el amor puede surgir en los lugares más inesperados cuando conoce a una Bestia bajo un hechizo."
+  },
+  {
+    "titulo": "Aladdín",
+    "director": "Ron Clements y John Musker",
+    "anio": 1992,
+    "id": null,
+    "duracion": 90,
+    "genero": "Animación",
+    "sinopsis": "Aladdín encuentra una lámpara mágica con un genio que puede concederle deseos mientras intenta ganarse el corazón de la princesa Jasmine."
+  },
+  {
+    "titulo": "Frozen: Una aventura congelada",
+    "director": "Chris Buck y Jennifer Lee",
+    "anio": 2013,
+    "id": null,
+    "duracion": 102,
+    "genero": "Animación",
+    "sinopsis": "Anna se embarca en una aventura épica para salvar a su hermana Elsa, cuyos poderes han congelado el reino eternamente."
+  },
+  {
+    "titulo": "Moana",
+    "director": "Ron Clements y John Musker",
+    "anio": 2016,
+    "id": null,
+    "duracion": 107,
+    "genero": "Animación",
+    "sinopsis": "Moana, una joven navegante, parte en un viaje valiente para salvar a su isla y descubrir su verdadera identidad."
+  }
+]
+

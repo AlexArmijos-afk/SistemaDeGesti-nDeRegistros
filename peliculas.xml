@@ -1,2 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Peliculas/>
+<Peliculas>
+    <pelicula>
+        <Titulo>ñ</Titulo>
+        <Director>k</Director>
+        <Anio>1</Anio>
+        <Duracion>1</Duracion>
+        <Genero>gf</Genero>
+        <Sinopsis>g</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <Titulo>j</Titulo>
+        <Director>j</Director>
+        <Anio>67</Anio>
+        <Duracion>7</Duracion>
+        <Genero>ffd</Genero>
+        <Sinopsis>dd</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <Titulo>El Rey León</Titulo>
+        <Director>Roger Allers y Rob Minkoff</Director>
+        <Anio>1994</Anio>
+        <Duracion>88</Duracion>
+        <Genero>Animación</Genero>
+        <Sinopsis>Simba, un joven león destinado a ser rey, debe enfrentar la traición y encontrar su camino para reclamar su lugar en el reino.</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <Titulo>La Bella y la Bestia</Titulo>
+        <Director>Gary Trousdale y Kirk Wise</Director>
+        <Anio>1991</Anio>
+        <Duracion>84</Duracion>
+        <Genero>Animación</Genero>
+        <Sinopsis>Una joven llamada Bella descubre que el amor puede surgir en los lugares más inesperados cuando conoce a una Bestia bajo un hechizo.</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <Titulo>Aladdín</Titulo>
+        <Director>Ron Clements y John Musker</Director>
+        <Anio>1992</Anio>
+        <Duracion>90</Duracion>
+        <Genero>Animación</Genero>
+        <Sinopsis>Aladdín encuentra una lámpara mágica con un genio que puede concederle deseos mientras intenta ganarse el corazón de la princesa Jasmine.</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <Titulo>Frozen: Una aventura congelada</Titulo>
+        <Director>Chris Buck y Jennifer Lee</Director>
+        <Anio>2013</Anio>
+        <Duracion>102</Duracion>
+        <Genero>Animación</Genero>
+        <Sinopsis>Anna se embarca en una aventura épica para salvar a su hermana Elsa, cuyos poderes han congelado el reino eternamente.</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <Titulo>Moana</Titulo>
+        <Director>Ron Clements y John Musker</Director>
+        <Anio>2016</Anio>
+        <Duracion>107</Duracion>
+        <Genero>Animación</Genero>
+        <Sinopsis>Moana, una joven navegante, parte en un viaje valiente para salvar a su isla y descubrir su verdadera identidad.</Sinopsis>
+    </pelicula>
+</Peliculas>
