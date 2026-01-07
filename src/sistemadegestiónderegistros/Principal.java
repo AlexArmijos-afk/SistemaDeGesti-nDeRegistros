@@ -46,7 +46,14 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
-
+        
+        ConeccionBBDD peliculasBBDD = new ConeccionBBDD();
+        if(peliculasBBDD.crearBBDD()){
+            System.out.println("BBDD creada correctamente");
+        }else{
+            System.out.println("ERROR al crear la BBDD");
+        }
+        
         leerXML(new File("peliculas.xml"));
 
         cargarLista(peliculas);
