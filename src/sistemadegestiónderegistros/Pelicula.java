@@ -29,6 +29,15 @@ public class Pelicula {
     public Pelicula() {
     }
 
+    public Pelicula(String titulo, String director, int anio, int duracion, String genero, String sinopsis) {
+        this.titulo = titulo;
+        this.director = director;
+        this.anio = anio;
+        this.duracion = duracion;
+        this.genero = genero;
+        this.sinopsis = sinopsis;
+    }
+    
     public Pelicula(String titulo, String director, int anio, String id, int duracion, String genero, String sinopsis) {
         this.titulo = titulo;
         this.director = director;
@@ -38,17 +47,16 @@ public class Pelicula {
         this.genero = genero;
         this.sinopsis = sinopsis;
     }
-
+// hashCode y equals sin campo ID
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 47 * hash + Objects.hashCode(this.titulo);
-        hash = 47 * hash + Objects.hashCode(this.director);
-        hash = 47 * hash + this.anio;
-        hash = 47 * hash + Objects.hashCode(this.id);
-        hash = 47 * hash + this.duracion;
-        hash = 47 * hash + Objects.hashCode(this.genero);
-        hash = 47 * hash + Objects.hashCode(this.sinopsis);
+        int hash = 5;
+        hash = 43 * hash + Objects.hashCode(this.titulo);
+        hash = 43 * hash + Objects.hashCode(this.director);
+        hash = 43 * hash + this.anio;
+        hash = 43 * hash + this.duracion;
+        hash = 43 * hash + Objects.hashCode(this.genero);
+        hash = 43 * hash + Objects.hashCode(this.sinopsis);
         return hash;
     }
 
@@ -64,8 +72,26 @@ public class Pelicula {
             return false;
         }
         final Pelicula other = (Pelicula) obj;
-        return true;
+        if (this.anio != other.anio) {
+            return false;
+        }
+        if (this.duracion != other.duracion) {
+            return false;
+        }
+        if (!Objects.equals(this.titulo, other.titulo)) {
+            return false;
+        }
+        if (!Objects.equals(this.director, other.director)) {
+            return false;
+        }
+        if (!Objects.equals(this.genero, other.genero)) {
+            return false;
+        }
+        return Objects.equals(this.sinopsis, other.sinopsis);
     }
+
+   
+
 
     @Override
     public String toString() {

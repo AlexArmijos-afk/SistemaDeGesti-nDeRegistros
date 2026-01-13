@@ -13,7 +13,7 @@ import java.awt.Color;
 public class DetallePelicula extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DetallePelicula.class.getName());
-    private Pelicula peliculaEnvio ;
+    private Pelicula peliculaEnvio = new Pelicula() ;
     private Boolean eliminar =false;
     /**
      * Creates new form DetallePelicula1
@@ -217,9 +217,13 @@ public class DetallePelicula extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGuardarActionPerformed
-        peliculaEnvio = new Pelicula(tTitulo.getText(), tDirector.getText(), Integer.parseInt(tAnio.getText()), "",
-            Integer.parseInt(tDuracion.getText()), tGenero.getText(), tSinopsis.getText());
-        
+        peliculaEnvio.setTitulo(tTitulo.getText());
+        peliculaEnvio.setDirector(tDirector.getText());
+        peliculaEnvio.setAnio(Integer.parseInt(tAnio.getText()));
+        peliculaEnvio.setDuracion(Integer.parseInt(tDuracion.getText()));
+        peliculaEnvio.setGenero(tGenero.getText());
+        peliculaEnvio.setSinopsis(tSinopsis.getText());
+
         this.dispose();
     }//GEN-LAST:event_bGuardarActionPerformed
 

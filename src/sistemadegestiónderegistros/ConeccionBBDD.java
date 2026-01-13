@@ -46,6 +46,7 @@ public class ConeccionBBDD {
     }
     
     public ArrayList<Pelicula> findAll(){
+        peliculas.clear();
         try {
             rs = stmt.executeQuery("select * from pelicula");
             

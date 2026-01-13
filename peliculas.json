@@ -1,0 +1,52 @@
+{
+  [
+    {
+      "Titulo": "La Bella y la Bestia",
+      "Director": "Gary Trousdale",
+      "Anio": 1991,
+      "Duracion": 84,
+      "Genero": "Animación",
+      "Sinopsis": "Una joven inteligente descubre que un príncipe ha sido transformado en bestia."
+    },
+    {
+      "Titulo": "El Rey León",
+      "Director": "Roger Allers",
+      "Anio": 1994,
+      "Duracion": 88,
+      "Genero": "Animación",
+      "Sinopsis": "Simba huye tras la muerte de su padre, pero debe regresar para reclamar su reino."
+    },
+    {
+      "Titulo": "Matrix",
+      "Director": "Lana Wachowski",
+      "Anio": 1999,
+      "Duracion": 136,
+      "Genero": "Ciencia Ficción",
+      "Sinopsis": "Un hacker descubre que la realidad es una simulación controlada por máquinas."
+    },
+    {
+      "Titulo": "Gladiator",
+      "Director": "Ridley Scott",
+      "Anio": 2000,
+      "Duracion": 155,
+      "Genero": "Acción",
+      "Sinopsis": "Un general romano traicionado se convierte en gladiador para buscar justicia."
+    },
+    {
+      "Titulo": "Toy Story",
+      "Director": "John Lasseter",
+      "Anio": 1995,
+      "Duracion": 81,
+      "Genero": "Animación",
+      "Sinopsis": "Un vaquero de juguete se siente amenazado por la llegada de un nuevo astronauta."
+    },
+    {
+      "Titulo": "Interestelar",
+      "Director": "Christopher Nolan",
+      "Anio": 2014,
+      "Duracion": 169,
+      "Genero": "Ciencia Ficción",
+      "Sinopsis": "Un grupo de astronautas viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad."
+    }
+  ]
+}
