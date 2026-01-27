@@ -5,16 +5,21 @@
 package sistemadegestiónderegistros;
 
 import java.awt.Color;
+import java.io.IOException;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author A.ARMIJOS
  */
 public class DetallePelicula extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DetallePelicula.class.getName());
-    private Pelicula peliculaEnvio = new Pelicula() ;
-    private Boolean eliminar =false;
+    private Pelicula peliculaEnvio = new Pelicula();
+    private Boolean eliminar = false;
+
     /**
      * Creates new form DetallePelicula1
      */
@@ -24,29 +29,27 @@ public class DetallePelicula extends javax.swing.JDialog {
         bEditar.setVisible(false);
         bEliminar.setVisible(false);
     }
-    
-    public DetallePelicula(java.awt.Frame parent, boolean modal,Pelicula p) {
+
+    public DetallePelicula(java.awt.Frame parent, boolean modal, Pelicula p) {
         super(parent, modal);
         initComponents();
         this.peliculaEnvio = p;
         lTituloVentana.setText(peliculaEnvio.getTitulo());
         tTitulo.setText(peliculaEnvio.getTitulo());
         tDirector.setText(peliculaEnvio.getDirector());
-        tAnio.setText(peliculaEnvio.getAnio()+"");
-        tDuracion.setText(peliculaEnvio.getDuracion()+"");
+        tAnio.setText(peliculaEnvio.getAnio() + "");
+        tDuracion.setText(peliculaEnvio.getDuracion() + "");
         tGenero.setText(peliculaEnvio.getGenero());
         tSinopsis.setText(peliculaEnvio.getSinopsis());
-        
-        
-        
+        jImagen.setIcon(new ImageIcon(peliculaEnvio.getPoster()));
+
         tTitulo.setDisabledTextColor(Color.BLACK);
         tDirector.setDisabledTextColor(Color.BLACK);
         tAnio.setDisabledTextColor(Color.BLACK);
         tDuracion.setDisabledTextColor(Color.BLACK);
         tGenero.setDisabledTextColor(Color.BLACK);
         tSinopsis.setDisabledTextColor(Color.BLACK);
-        
-        
+
         tTitulo.setEnabled(false);
         tDirector.setEnabled(false);
         tAnio.setEnabled(false);
@@ -54,8 +57,6 @@ public class DetallePelicula extends javax.swing.JDialog {
         tGenero.setEnabled(false);
         tSinopsis.setEnabled(false);
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,6 +83,8 @@ public class DetallePelicula extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         tTitulo = new javax.swing.JTextField();
         tDirector = new javax.swing.JTextField();
+        jImagen = new javax.swing.JLabel();
+        bCambiarImagen = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -121,55 +124,63 @@ public class DetallePelicula extends javax.swing.JDialog {
 
         jLabel7.setText("Sinopsis:");
 
+        jImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminator.jpg"))); // NOI18N
+        jImagen.setText("jLabel1");
+
+        bCambiarImagen.setText("Cambiar Imagen");
+        bCambiarImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bCambiarImagenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(23, 23, 23)
-                                .addComponent(tGenero)))
-                        .addGap(0, 18, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(bEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
-                                .addComponent(bEditar)
-                                .addGap(18, 18, 18)
-                                .addComponent(bGuardar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(tSinopsis)))
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addGap(18, 18, 18))
+                        .addComponent(bEliminar)
+                        .addGap(125, 125, 125)
+                        .addComponent(bEditar)
+                        .addGap(18, 18, 18)
+                        .addComponent(bGuardar))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel7)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addGap(38, 38, 38)))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addGap(38, 38, 38)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(29, 29, 29)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(tTitulo, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tDirector, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(tAnio, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                                .addContainerGap())))))
+                                    .addComponent(jLabel2)
+                                    .addGap(29, 29, 29)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(tTitulo, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tDirector, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tAnio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tSinopsis, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(tDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addGap(23, 23, 23)
+                                    .addComponent(tGenero))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jImagen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bCambiarImagen, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(29, 29, 29))
             .addGroup(layout.createSequentialGroup()
                 .addGap(180, 180, 180)
                 .addComponent(lTituloVentana)
@@ -180,36 +191,46 @@ public class DetallePelicula extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lTituloVentana)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(tTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(tDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(tAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(tDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(tGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(tSinopsis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bEditar)
-                    .addComponent(bGuardar)
-                    .addComponent(bEliminar))
-                .addGap(17, 17, 17))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(tTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(tDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(tAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(tDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(tGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(tSinopsis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addComponent(bEliminar)
+                        .addGap(17, 17, 17))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bEditar)
+                            .addComponent(bGuardar)
+                            .addComponent(bCambiarImagen))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -228,7 +249,7 @@ public class DetallePelicula extends javax.swing.JDialog {
     }//GEN-LAST:event_bGuardarActionPerformed
 
     private void bEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarActionPerformed
-        eliminar=true;
+        eliminar = true;
         this.dispose();
     }//GEN-LAST:event_bEliminarActionPerformed
 
@@ -240,7 +261,26 @@ public class DetallePelicula extends javax.swing.JDialog {
         tGenero.setEnabled(true);
         tSinopsis.setEnabled(true);
     }//GEN-LAST:event_bEditarActionPerformed
-    
+
+    private void bCambiarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCambiarImagenActionPerformed
+        JFileChooser selector = new JFileChooser("./src/resources/");
+        selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int respuesta = selector.showOpenDialog(this);
+        if (respuesta == JFileChooser.APPROVE_OPTION) {
+            try {
+                peliculaEnvio.setPoster(selector.getSelectedFile().getCanonicalPath());
+                
+                ImageIcon src = new ImageIcon(selector.getSelectedFile().getCanonicalPath());
+                Icon icono = new ImageIcon(src.getImage().getScaledInstance(
+                        jImagen.getWidth(), jImagen.getHeight(), java.awt.Image.SCALE_SMOOTH));
+                jImagen.setIcon(icono);
+                jImagen.setText(null);
+            } catch (IOException ex) {
+                System.getLogger(DetallePelicula.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+    }//GEN-LAST:event_bCambiarImagenActionPerformed
+
     public Pelicula getPeliculaEnvio() {
         return peliculaEnvio;
     }
@@ -252,8 +292,7 @@ public class DetallePelicula extends javax.swing.JDialog {
     public Boolean getEliminar() {
         return eliminar;
     }
-    
-    
+
     /**
      * @param args the command line arguments
      */
@@ -292,9 +331,11 @@ public class DetallePelicula extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bCambiarImagen;
     private javax.swing.JButton bEditar;
     private javax.swing.JButton bEliminar;
     private javax.swing.JButton bGuardar;
+    private javax.swing.JLabel jImagen;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
