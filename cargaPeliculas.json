@@ -1,0 +1,38 @@
+[
+  {
+    "titulo": "El Padrino",
+    "director": "Francis Ford Coppola",
+    "anio": 1972,
+    "id": "1",
+    "duracion": 175,
+    "genero": "Crimen / Drama",
+    "sinopsis": "La historia de la familia Corleone, una de las más poderosas de la mafia italoamericana, y el ascenso de Michael Corleone en el mundo del crimen organizado."
+  },
+  {
+    "titulo": "Forrest Gump",
+    "director": "Robert Zemeckis",
+    "anio": 1994,
+    "id": "2",
+    "duracion": 142,
+    "genero": "Drama / Romance",
+    "sinopsis": "Forrest Gump, un hombre con una inteligencia limitada pero un gran corazón, vive momentos históricos clave de Estados Unidos mientras persigue a su gran amor."
+  },
+  {
+    "titulo": "Inception",
+    "director": "Christopher Nolan",
+    "anio": 2010,
+    "id": "3",
+    "duracion": 148,
+    "genero": "Ciencia ficción / Acción",
+    "sinopsis": "Un ladrón especializado en robar secretos del subconsciente debe implantar una idea en la mente de un objetivo como último trabajo para recuperar su vida."
+  },
+  {
+    "titulo": "Parásitos",
+    "director": "Bong Joon-ho",
+    "anio": 2019,
+    "id": "9",
+    "duracion": 132,
+    "genero": "Thriller / Drama",
+    "sinopsis": "Una familia pobre se infiltra poco a poco en la vida de una familia adinerada, desencadenando una serie de eventos tan ingeniosos como perturbadores."
+  }
+]

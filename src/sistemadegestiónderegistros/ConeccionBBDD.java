@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,8 @@ public class ConeccionBBDD {
             stmt = conexion.createStatement();
             int executeUpdate = stmt.executeUpdate("create database if not exists peliculas");
             int executeUpdate1 = stmt.executeUpdate("use peliculas");
-            int executeUpdate2 = stmt.executeUpdate("create table if not exists pelicula (titulo varchar(50), director varchar(50), anio year,id integer primary key auto_increment not null, duracion integer, genero varchar(50), sinopsis varchar(50));");
+            int executeUpdate2 = stmt.executeUpdate("create table if not exists pelicula (titulo varchar(50), director varchar(50), anio year,id integer primary key auto_increment not null, duracion integer, genero varchar(50), sinopsis varchar(500));");
+            int executeUpdate3 = stmt.executeUpdate("create table if not exists fecha (ultimaActualizacion datetime);");
             
             return true;
         } catch (ClassNotFoundException ex) {
@@ -71,10 +73,18 @@ public class ConeccionBBDD {
         }
         if(!encontrada){
             insertarPelicula(pelicula);
-        }
-        
+        }  
     }
 
+    public boolean guardarFecha(LocalDateTime fecha){
+        try {
+            int rs = stmt.executeUpdate("INSERT INTO fecha (`ultimaActualizacion`) VALUES ('" + fecha + "')");
+            return true;
+        } catch (SQLException ex) {
+            System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            return false;
+        }  
+    }
     
     public boolean borrarPelicula(Pelicula pelicula){
         try {

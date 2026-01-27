@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class Principal extends javax.swing.JFrame {
     private ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
     private Boolean conectado;
     private ConeccionBBDD peliculasBBDD;
+    private LocalDateTime fecha = LocalDateTime.now();
 
     /**
      * Creates new form Principal
@@ -344,10 +346,8 @@ public class Principal extends javax.swing.JFrame {
             peliculasBBDD.agregaDesdeListado(ventanaDetallePelicula.getPeliculaEnvio());
             peliculas = peliculasBBDD.findAll();
         } else {
-            for (Pelicula p : peliculas) {
-                if (!p.equals(ventanaDetallePelicula.getPeliculaEnvio())) {
-                    peliculas.add(ventanaDetallePelicula.getPeliculaEnvio());
-                }
+            if (!peliculas.contains(ventanaDetallePelicula.getPeliculaEnvio())) {
+                peliculas.add(ventanaDetallePelicula.getPeliculaEnvio());
             }
 
         }
@@ -392,6 +392,8 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void bEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarActionPerformed
+        Pelicula p = peliculas.get(jlPelicula.getSelectedIndex());
+        peliculasBBDD.borrarPelicula(p);
         peliculas.remove(jlPelicula.getSelectedIndex());
         cargarLista(peliculas);
     }//GEN-LAST:event_bEliminarActionPerformed
@@ -412,6 +414,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         escribirXML(new File("peliculas.xml"));
+        peliculasBBDD.guardarFecha(fecha);
     }//GEN-LAST:event_formWindowClosing
 
     private void bExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportarActionPerformed
@@ -455,6 +458,7 @@ public class Principal extends javax.swing.JFrame {
         Document dpeliculas = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 
         Element raiz = dpeliculas.createElement("Peliculas");
+        raiz.setAttribute("fechaGeneracion", fecha.toString());
         dpeliculas.appendChild(raiz);
         
         for (Pelicula p : peliculas) {
@@ -537,7 +541,16 @@ public class Principal extends javax.swing.JFrame {
                     String sinopsis = (String) peli.get("sinopsis");
                     
                     Pelicula peliNueva = new Pelicula(titulo, director, anio, id, duracion, genero, sinopsis);
-                    peliculas.add(peliNueva);
+                    
+                    if (conectado) {
+                            //comparar con la bbdd
+                            peliculasBBDD.agregaDesdeListado(peliNueva);
+                            peliculas = peliculasBBDD.findAll();
+                    } else {
+                        if (!peliculas.contains(peliNueva)) {
+                            peliculas.add(peliNueva);
+                        }
+                    }
                 }
                 
             } catch (IOException ex) {

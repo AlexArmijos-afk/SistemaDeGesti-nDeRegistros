@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Peliculas>
+<Peliculas fechaGeneracion="2026-01-27T10:47:27.421716600">
     <pelicula>
         <ID>1</ID>
-        <Titulo>hola</Titulo>
+        <Titulo>hola Alex</Titulo>
         <Director>jose</Director>
         <Anio>2001</Anio>
         <Duracion>345</Duracion>
@@ -28,12 +28,57 @@
         <Sinopsis>sdfgsdf</Sinopsis>
     </pelicula>
     <pelicula>
-        <ID>9</ID>
+        <ID>4</ID>
         <Titulo>adios</Titulo>
         <Director>alex</Director>
         <Anio>2023</Anio>
         <Duracion>3456</Duracion>
         <Genero>fgydfh</Genero>
         <Sinopsis>sgsfdgs</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <ID>5</ID>
+        <Titulo>dumbo</Titulo>
+        <Director>asdf</Director>
+        <Anio>1940</Anio>
+        <Duracion>46</Duracion>
+        <Genero>asdf</Genero>
+        <Sinopsis>asdfasd</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <ID>6</ID>
+        <Titulo>El Padrino</Titulo>
+        <Director>Francis Ford Coppola</Director>
+        <Anio>1972</Anio>
+        <Duracion>175</Duracion>
+        <Genero>Crimen / Drama</Genero>
+        <Sinopsis>La historia de la familia Corleone, una de las más poderosas de la mafia italoamericana, y el ascenso de Michael Corleone en el mundo del crimen organizado.</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <ID>7</ID>
+        <Titulo>Forrest Gump</Titulo>
+        <Director>Robert Zemeckis</Director>
+        <Anio>1994</Anio>
+        <Duracion>142</Duracion>
+        <Genero>Drama / Romance</Genero>
+        <Sinopsis>Forrest Gump, un hombre con una inteligencia limitada pero un gran corazón, vive momentos históricos clave de Estados Unidos mientras persigue a su gran amor.</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <ID>8</ID>
+        <Titulo>Inception</Titulo>
+        <Director>Christopher Nolan</Director>
+        <Anio>2010</Anio>
+        <Duracion>148</Duracion>
+        <Genero>Ciencia ficción / Acción</Genero>
+        <Sinopsis>Un ladrón especializado en robar secretos del subconsciente debe implantar una idea en la mente de un objetivo como último trabajo para recuperar su vida.</Sinopsis>
+    </pelicula>
+    <pelicula>
+        <ID>9</ID>
+        <Titulo>Parásitos</Titulo>
+        <Director>Bong Joon-ho</Director>
+        <Anio>2019</Anio>
+        <Duracion>132</Duracion>
+        <Genero>Thriller / Drama</Genero>
+        <Sinopsis>Una familia pobre se infiltra poco a poco en la vida de una familia adinerada, desencadenando una serie de eventos tan ingeniosos como perturbadores.</Sinopsis>
     </pelicula>
 </Peliculas>
