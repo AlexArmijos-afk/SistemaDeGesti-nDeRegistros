@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -58,150 +59,16 @@ public class Principal extends javax.swing.JFrame {
         if(conectado){
             System.out.println("Conexión a la BBDD exitosa");
             peliculas = peliculasBBDD.findAll();
+            setTitle("Conectado a la Base de Datos");
         }else{
             System.out.println("ERROR al conectarse la BBDD. Se trabajará en local");
             leerXML(new File("peliculas.xml"));
+            setTitle("Trabajando en local, sin acceso a BBDD.");
         }
         
         cargarLista(peliculas);
     }
 
-    public void leerXML(File archivo) {
-    
-    try {
-        if (archivo.exists()) {
-
-            SAXParserFactory.newInstance().newSAXParser().parse(
-                    archivo,
-                    new DefaultHandler() {
-
-                Pelicula actual;
-
-                boolean id;           // AÑADIDO
-                boolean titulo;
-                boolean director;
-                boolean anio;
-                boolean duracion;
-                boolean genero;
-                boolean sinopsis;
-
-                @Override
-                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-
-                    if (qName.equalsIgnoreCase("pelicula")) {
-                        actual = new Pelicula();
-                    }
-
-                    // AÑADIDO: Detectar etiqueta ID
-                    if (qName.equalsIgnoreCase("ID")) {
-                        id = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Titulo")) {
-                        titulo = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Director")) {
-                        director = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Anio")) {
-                        anio = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Duracion")) {
-                        duracion = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Genero")) {
-                        genero = true;
-                    }
-
-                    if (qName.equalsIgnoreCase("Sinopsis")) {
-                        sinopsis = true;
-                    }
-                }
-
-                @Override
-                public void characters(char[] ch, int start, int length) throws SAXException {
-
-                    String texto = new String(ch, start, length).trim();
-                    if (texto.isEmpty()) {
-                        return;
-                    }
-
-                    // AÑADIDO: Leer y asignar ID
-                    if (id) {
-                        actual.setId(texto);
-                        id = false;
-                    }
-
-                    if (titulo) {
-                        actual.setTitulo(texto);
-                        titulo = false;
-                    }
-
-                    if (director) {
-                        actual.setDirector(texto);
-                        director = false;
-                    }
-
-                    if (anio) {
-                        actual.setAnio(Integer.parseInt(texto));
-                        anio = false;
-                    }
-
-                    if (duracion) {
-                        actual.setDuracion(Integer.parseInt(texto));
-                        duracion = false;
-                    }
-
-                    if (genero) {
-                        actual.setGenero(texto);
-                        genero = false;
-                    }
-
-                    if (sinopsis) {
-                        actual.setSinopsis(texto);
-                        sinopsis = false;
-                    }
-                }
-
-                @Override
-                public void endElement(String uri, String localName, String qName) throws SAXException {
-                    boolean encontrada = false;
-                    if (qName.equalsIgnoreCase("pelicula")) {
-                        if (conectado) {
-                            //comparar con la bbdd
-                            peliculasBBDD.agregaDesdeListado(actual);
-                            peliculas = peliculasBBDD.findAll();
-                        } else {
-                            //comparar con arraylist
-                            for (Pelicula p : peliculas) {
-                                if (p.equals(actual)) {
-                                    encontrada = true;
-                                }
-                            }
-                            if (!encontrada) {
-                                peliculas.add(actual);
-                            }
-                        }
-                    }
-                }
-            }
-            );
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al leer el archivo " + archivo.getName());
-            System.out.println("Error");
-        }
-    } catch (ParserConfigurationException ex) {
-        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SAXException ex) {
-        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IOException ex) {
-        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-    }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -383,19 +250,15 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jlPeliculaMouseClicked
 
-    public void cargarLista(ArrayList<Pelicula> array) {
-        DefaultListModel modelo = new DefaultListModel();
-        modelo.setSize(0);
-        modelo.addAll(array);
-
-        jlPelicula.setModel(modelo);
-    }
 
     private void bEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarActionPerformed
         Pelicula p = peliculas.get(jlPelicula.getSelectedIndex());
-        peliculasBBDD.borrarPelicula(p);
         peliculas.remove(jlPelicula.getSelectedIndex());
         cargarLista(peliculas);
+        
+        if(conectado){
+            peliculasBBDD.borrarPelicula(p);
+        }
     }//GEN-LAST:event_bEliminarActionPerformed
 
     private void bImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bImportarActionPerformed
@@ -420,15 +283,36 @@ public class Principal extends javax.swing.JFrame {
     private void bExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportarActionPerformed
         JFileChooser selector = new JFileChooser(".");
         selector.setSelectedFile(new File("prueba"));
+        
+        // Crear filtros para cada tipo de archivo
+        FileNameExtensionFilter filtroXML = new FileNameExtensionFilter("Archivos XML (*.xml)", "xml");
+        FileNameExtensionFilter filtroJSON = new FileNameExtensionFilter("Archivos JSON (*.json)", "json");
+
+        // Agregar los filtros al selector
+        selector.addChoosableFileFilter(filtroXML);
+        selector.addChoosableFileFilter(filtroJSON);
+        selector.setFileFilter(filtroXML);
+        selector.setAcceptAllFileFilterUsed(false);
+        
         int respuesta = selector.showSaveDialog(this);
         
-//        if (respuesta == JFileChooser.APPROVE_OPTION) {
-//            File archivoNuevo = new File(selector.getSelectedFile() + ".xml");
-//            escribirXML(archivoNuevo);
-//        }
         if (respuesta == JFileChooser.APPROVE_OPTION) {
-            File archivoNuevo = new File(selector.getSelectedFile() + ".json");
-            escribirJSON(archivoNuevo);
+            File archivoNuevo = selector.getSelectedFile();
+            FileNameExtensionFilter filtroSeleccionado = (FileNameExtensionFilter) selector.getFileFilter();
+            String extension = filtroSeleccionado.getExtensions()[0];
+
+            // Asegurar que el archivo tenga la extensión correcta
+            String ruta = archivoNuevo.getAbsolutePath();
+            if (!ruta.endsWith("." + extension)) {
+                archivoNuevo = new File(ruta + "." + extension);
+            }
+
+            // Exportar según la extensión seleccionada
+            if (extension.equals("xml")) {
+                escribirXML(archivoNuevo);
+            } else {
+                escribirJSON(archivoNuevo);
+            }
         }
     }//GEN-LAST:event_bExportarActionPerformed
 
@@ -446,6 +330,144 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tBuscarKeyReleased
 
+    
+    public void leerXML(File archivo) {
+    
+    try {
+        if (archivo.exists()) {
+
+            SAXParserFactory.newInstance().newSAXParser().parse(
+                    archivo,
+                    new DefaultHandler() {
+
+                Pelicula actual;
+
+                boolean id;           // AÑADIDO
+                boolean titulo;
+                boolean director;
+                boolean anio;
+                boolean duracion;
+                boolean genero;
+                boolean sinopsis;
+
+                @Override
+                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+
+                    if (qName.equalsIgnoreCase("pelicula")) {
+                        actual = new Pelicula();
+                    }
+
+                    // AÑADIDO: Detectar etiqueta ID
+                    if (qName.equalsIgnoreCase("ID")) {
+                        id = true;
+                    }
+
+                    if (qName.equalsIgnoreCase("Titulo")) {
+                        titulo = true;
+                    }
+
+                    if (qName.equalsIgnoreCase("Director")) {
+                        director = true;
+                    }
+
+                    if (qName.equalsIgnoreCase("Anio")) {
+                        anio = true;
+                    }
+
+                    if (qName.equalsIgnoreCase("Duracion")) {
+                        duracion = true;
+                    }
+
+                    if (qName.equalsIgnoreCase("Genero")) {
+                        genero = true;
+                    }
+
+                    if (qName.equalsIgnoreCase("Sinopsis")) {
+                        sinopsis = true;
+                    }
+                }
+
+                @Override
+                public void characters(char[] ch, int start, int length) throws SAXException {
+
+                    String texto = new String(ch, start, length).trim();
+                    if (texto.isEmpty()) {
+                        return;
+                    }
+
+                    // AÑADIDO: Leer y asignar ID
+                    if (id) {
+                        actual.setId(texto);
+                        id = false;
+                    }
+
+                    if (titulo) {
+                        actual.setTitulo(texto);
+                        titulo = false;
+                    }
+
+                    if (director) {
+                        actual.setDirector(texto);
+                        director = false;
+                    }
+
+                    if (anio) {
+                        actual.setAnio(Integer.parseInt(texto));
+                        anio = false;
+                    }
+
+                    if (duracion) {
+                        actual.setDuracion(Integer.parseInt(texto));
+                        duracion = false;
+                    }
+
+                    if (genero) {
+                        actual.setGenero(texto);
+                        genero = false;
+                    }
+
+                    if (sinopsis) {
+                        actual.setSinopsis(texto);
+                        sinopsis = false;
+                    }
+                }
+
+                @Override
+                public void endElement(String uri, String localName, String qName) throws SAXException {
+                    boolean encontrada = false;
+                    if (qName.equalsIgnoreCase("pelicula")) {
+                        if (conectado) {
+                            //comparar con la bbdd
+                            peliculasBBDD.agregaDesdeListado(actual);
+                            peliculas = peliculasBBDD.findAll();
+                        } else {
+                            //comparar con arraylist
+                            for (Pelicula p : peliculas) {
+                                if (p.equals(actual)) {
+                                    encontrada = true;
+                                }
+                            }
+                            if (!encontrada) {
+                                peliculas.add(actual);
+                            }
+                        }
+                    }
+                }
+            }
+            );
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al leer el archivo " + archivo.getName());
+            System.out.println("Error");
+        }
+    } catch (ParserConfigurationException ex) {
+        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SAXException ex) {
+        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (IOException ex) {
+        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+    
     public void escribirXML(File archivoSalida) {
     try {
 
@@ -561,6 +583,15 @@ public class Principal extends javax.swing.JFrame {
             System.out.println("Error");
         }
     }
+        
+    public void cargarLista(ArrayList<Pelicula> array) {
+        DefaultListModel modelo = new DefaultListModel();
+        modelo.setSize(0);
+        modelo.addAll(array);
+
+        jlPelicula.setModel(modelo);
+    }
+    
     /**
      * @param args the command line arguments
      */

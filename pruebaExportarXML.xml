@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Peliculas fechaGeneracion="2026-01-27T12:14:45.968327800">
+<Peliculas fechaGeneracion="2026-01-27T11:56:55.394172">
+    <pelicula>
+        <ID>1</ID>
+        <Titulo>hola Alex</Titulo>
+        <Director>jose</Director>
+        <Anio>2001</Anio>
+        <Duracion>345</Duracion>
+        <Genero>sdfgq</Genero>
+        <Sinopsis>wert</Sinopsis>
+    </pelicula>
     <pelicula>
         <ID>2</ID>
         <Titulo>chao</Titulo>
@@ -71,32 +80,5 @@
         <Duracion>132</Duracion>
         <Genero>Thriller / Drama</Genero>
         <Sinopsis>Una familia pobre se infiltra poco a poco en la vida de una familia adinerada, desencadenando una serie de eventos tan ingeniosos como perturbadores.</Sinopsis>
-    </pelicula>
-    <pelicula>
-        <ID>null</ID>
-        <Titulo>nueva peli</Titulo>
-        <Director>lala</Director>
-        <Anio>1234</Anio>
-        <Duracion>12</Duracion>
-        <Genero>asdfa</Genero>
-        <Sinopsis>asdfas</Sinopsis>
-    </pelicula>
-    <pelicula>
-        <ID>null</ID>
-        <Titulo/>
-        <Director/>
-        <Anio>0</Anio>
-        <Duracion>0</Duracion>
-        <Genero/>
-        <Sinopsis/>
-    </pelicula>
-    <pelicula>
-        <ID>null</ID>
-        <Titulo/>
-        <Director/>
-        <Anio>0</Anio>
-        <Duracion>0</Duracion>
-        <Genero/>
-        <Sinopsis/>
     </pelicula>
 </Peliculas>
