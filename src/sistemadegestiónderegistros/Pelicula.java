@@ -25,20 +25,24 @@ public class Pelicula {
     private String genero;
     
     private String sinopsis;
+    
+    private String poster;
+    
 
     public Pelicula() {
     }
 
-    public Pelicula(String titulo, String director, int anio, int duracion, String genero, String sinopsis) {
+    public Pelicula(String titulo, String director, int anio, int duracion, String genero, String sinopsis, String poster) {
         this.titulo = titulo;
         this.director = director;
         this.anio = anio;
         this.duracion = duracion;
         this.genero = genero;
         this.sinopsis = sinopsis;
+        this.poster = poster;
     }
     
-    public Pelicula(String titulo, String director, int anio, String id, int duracion, String genero, String sinopsis) {
+    public Pelicula(String titulo, String director, int anio, String id, int duracion, String genero, String sinopsis, String poster) {
         this.titulo = titulo;
         this.director = director;
         this.anio = anio;
@@ -46,7 +50,29 @@ public class Pelicula {
         this.duracion = duracion;
         this.genero = genero;
         this.sinopsis = sinopsis;
+        this.poster = poster;
     }
+    
+
+    /**
+     * Get the value of poster
+     *
+     * @return the value of poster
+     */
+    public String getPoster() {
+        return poster;
+    }
+
+    /**
+     * Set the value of poster
+     *
+     * @param poster new value of poster
+     */
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    
 // hashCode y equals sin campo ID
     @Override
     public int hashCode() {

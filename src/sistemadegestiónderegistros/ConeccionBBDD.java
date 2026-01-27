@@ -34,7 +34,7 @@ public class ConeccionBBDD {
             stmt = conexion.createStatement();
             int executeUpdate = stmt.executeUpdate("create database if not exists peliculas");
             int executeUpdate1 = stmt.executeUpdate("use peliculas");
-            int executeUpdate2 = stmt.executeUpdate("create table if not exists pelicula (titulo varchar(50), director varchar(50), anio year,id integer primary key auto_increment not null, duracion integer, genero varchar(50), sinopsis varchar(500));");
+            int executeUpdate2 = stmt.executeUpdate("create table if not exists pelicula (titulo varchar(50), director varchar(50), anio year,id integer primary key auto_increment not null, duracion integer, genero varchar(50), sinopsis varchar(500), poster varchar(500));");
             int executeUpdate3 = stmt.executeUpdate("create table if not exists fecha (ultimaActualizacion datetime);");
             
             return true;
@@ -53,7 +53,7 @@ public class ConeccionBBDD {
             rs = stmt.executeQuery("select * from pelicula");
             
             while(rs.next()){
-                Pelicula pelicula = new Pelicula(rs.getString("titulo"), rs.getString("director"), rs.getInt("anio"), rs.getString("id"), rs.getInt("duracion"), rs.getString("genero"), rs.getString("sinopsis"));
+                Pelicula pelicula = new Pelicula(rs.getString("titulo"), rs.getString("director"), rs.getInt("anio"), rs.getString("id"), rs.getInt("duracion"), rs.getString("genero"), rs.getString("sinopsis"), rs.getString("poster"));
                 peliculas.add(pelicula);
             }
         } catch (SQLException ex) {
@@ -98,7 +98,7 @@ public class ConeccionBBDD {
     
     public boolean insertarPelicula(Pelicula pelicula){
         try {
-            int rs = stmt.executeUpdate("INSERT INTO pelicula (`titulo`, `director`, `anio`, `duracion`, `genero`, `sinopsis`) VALUES ('"+ pelicula.getTitulo() +"', '"+ pelicula.getDirector()+"', "+ pelicula.getAnio()+", '"+ pelicula.getDuracion()+"', '"+ pelicula.getGenero()+"', '"+ pelicula.getSinopsis()+"')");
+            int rs = stmt.executeUpdate("INSERT INTO pelicula (`titulo`, `director`, `anio`, `duracion`, `genero`, `sinopsis`, `poster`) VALUES ('"+ pelicula.getTitulo() +"', '"+ pelicula.getDirector()+"', "+ pelicula.getAnio()+", '"+ pelicula.getDuracion()+"', '"+ pelicula.getGenero()+"', '"+ pelicula.getSinopsis()+"', '"+ pelicula.getPoster()+"')");
             return true;
         } catch (SQLException ex) {
             System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -113,27 +113,9 @@ public class ConeccionBBDD {
 //    }
     
     
-    public String findAlumnoById(int id){   //tal vez debería generar un alumno y devolverlo
-        String infoAlumno = null;
-        try {            
-            try {            
-                rs = stmt.executeQuery("select * from alumno where id = " + id);  
-            } catch (SQLException ex) {
-                System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
-            while(rs.next()){
-                infoAlumno = "Id: " + rs.getInt("id") + " - Nombre: " + rs.getString("nombre") + " - Edad: " + rs.getInt("edad");
-            }
-            
-        } catch (SQLException ex) {
-            System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return infoAlumno;
-    }
-    
     public boolean actualizarPelicula(Pelicula pelicula){
         try {
-            stmt.executeUpdate("UPDATE `pelicula` SET `titulo` = '"+pelicula.getTitulo()+"', `director` = '"+pelicula.getDirector()+"', `anio` = "+pelicula.getAnio()+", `duracion` = '"+pelicula.getDuracion()+"', `genero` = '"+pelicula.getGenero()+"', `sinopsis` = '"+pelicula.getSinopsis()+"' WHERE (`id` = '"+pelicula.getId()+"')");
+            stmt.executeUpdate("UPDATE `pelicula` SET `titulo` = '"+pelicula.getTitulo()+"', `director` = '"+pelicula.getDirector()+"', `anio` = "+pelicula.getAnio()+", `duracion` = '"+pelicula.getDuracion()+"', `genero` = '"+pelicula.getGenero()+"', `sinopsis` = '"+pelicula.getSinopsis()+"', `poster` = '"+pelicula.getPoster()+"' WHERE (`id` = '"+pelicula.getId()+"')");
             return true;
         } catch (SQLException ex) {
             System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
