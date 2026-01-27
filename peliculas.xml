@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Peliculas fechaGeneracion="2026-01-27T12:14:45.968327800">
+<Peliculas fechaGeneracion="2026-01-27T13:15:04.352688900">
     <pelicula>
         <ID>2</ID>
         <Titulo>chao</Titulo>
@@ -8,6 +8,7 @@
         <Duracion>536</Duracion>
         <Genero>asd</Genero>
         <Sinopsis>si</Sinopsis>
+        <Poster>D:\2025-2026\AD\SistemaDeGestiónDeRegistros\src\resources\terminator.jpg</Poster>
     </pelicula>
     <pelicula>
         <ID>3</ID>
@@ -17,6 +18,7 @@
         <Duracion>745674</Duracion>
         <Genero>gdfss</Genero>
         <Sinopsis>sdfgsdf</Sinopsis>
+        <Poster/>
     </pelicula>
     <pelicula>
         <ID>4</ID>
@@ -26,6 +28,7 @@
         <Duracion>3456</Duracion>
         <Genero>fgydfh</Genero>
         <Sinopsis>sgsfdgs</Sinopsis>
+        <Poster/>
     </pelicula>
     <pelicula>
         <ID>5</ID>
@@ -35,6 +38,7 @@
         <Duracion>46</Duracion>
         <Genero>asdf</Genero>
         <Sinopsis>asdfasd</Sinopsis>
+        <Poster/>
     </pelicula>
     <pelicula>
         <ID>6</ID>
@@ -44,6 +48,7 @@
         <Duracion>175</Duracion>
         <Genero>Crimen / Drama</Genero>
         <Sinopsis>La historia de la familia Corleone, una de las más poderosas de la mafia italoamericana, y el ascenso de Michael Corleone en el mundo del crimen organizado.</Sinopsis>
+        <Poster/>
     </pelicula>
     <pelicula>
         <ID>7</ID>
@@ -53,6 +58,7 @@
         <Duracion>142</Duracion>
         <Genero>Drama / Romance</Genero>
         <Sinopsis>Forrest Gump, un hombre con una inteligencia limitada pero un gran corazón, vive momentos históricos clave de Estados Unidos mientras persigue a su gran amor.</Sinopsis>
+        <Poster/>
     </pelicula>
     <pelicula>
         <ID>8</ID>
@@ -62,6 +68,7 @@
         <Duracion>148</Duracion>
         <Genero>Ciencia ficción / Acción</Genero>
         <Sinopsis>Un ladrón especializado en robar secretos del subconsciente debe implantar una idea en la mente de un objetivo como último trabajo para recuperar su vida.</Sinopsis>
+        <Poster/>
     </pelicula>
     <pelicula>
         <ID>9</ID>
@@ -71,6 +78,7 @@
         <Duracion>132</Duracion>
         <Genero>Thriller / Drama</Genero>
         <Sinopsis>Una familia pobre se infiltra poco a poco en la vida de una familia adinerada, desencadenando una serie de eventos tan ingeniosos como perturbadores.</Sinopsis>
+        <Poster/>
     </pelicula>
     <pelicula>
         <ID>null</ID>
@@ -80,6 +88,7 @@
         <Duracion>12</Duracion>
         <Genero>asdfa</Genero>
         <Sinopsis>asdfas</Sinopsis>
+        <Poster/>
     </pelicula>
     <pelicula>
         <ID>null</ID>
@@ -89,14 +98,6 @@
         <Duracion>0</Duracion>
         <Genero/>
         <Sinopsis/>
-    </pelicula>
-    <pelicula>
-        <ID>null</ID>
-        <Titulo/>
-        <Director/>
-        <Anio>0</Anio>
-        <Duracion>0</Duracion>
-        <Genero/>
-        <Sinopsis/>
+        <Poster/>
     </pelicula>
 </Peliculas>
