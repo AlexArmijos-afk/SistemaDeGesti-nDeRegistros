@@ -23,6 +23,9 @@ public class DetallePelicula extends javax.swing.JDialog {
         initComponents();
         bEditar.setVisible(false);
         bEliminar.setVisible(false);
+        bGuardar.setEnabled(false);
+        
+        validarCamposListeners();
     }
     
     public DetallePelicula(java.awt.Frame parent, boolean modal,Pelicula p) {
@@ -239,9 +242,14 @@ public class DetallePelicula extends javax.swing.JDialog {
         tDuracion.setEnabled(true);
         tGenero.setEnabled(true);
         tSinopsis.setEnabled(true);
+        
+        validarFormulario();
     }//GEN-LAST:event_bEditarActionPerformed
     
     public Pelicula getPeliculaEnvio() {
+        if (peliculaEnvio != null && !esPeliculaValida(peliculaEnvio)) {
+        return null;
+    }
         return peliculaEnvio;
     }
 
@@ -253,6 +261,102 @@ public class DetallePelicula extends javax.swing.JDialog {
         return eliminar;
     }
     
+    private void validarCamposListeners() {
+        javax.swing.event.DocumentListener validacionListener = new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                validarFormulario();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                validarFormulario();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                validarFormulario();
+            }
+        };
+
+        // Agregar el listener a todos los campos
+        tTitulo.getDocument().addDocumentListener(validacionListener);
+        tDirector.getDocument().addDocumentListener(validacionListener);
+        tAnio.getDocument().addDocumentListener(validacionListener);
+        tDuracion.getDocument().addDocumentListener(validacionListener);
+        tGenero.getDocument().addDocumentListener(validacionListener);
+        tSinopsis.getDocument().addDocumentListener(validacionListener);
+    }
+
+    private void validarFormulario() {
+        try {
+            // Validar que ningún campo esté vacío
+            boolean camposLlenos = !tTitulo.getText().trim().isEmpty() &&
+                                   !tDirector.getText().trim().isEmpty() &&
+                                   !tAnio.getText().trim().isEmpty() &&
+                                   !tDuracion.getText().trim().isEmpty() &&
+                                   !tGenero.getText().trim().isEmpty() &&
+                                   !tSinopsis.getText().trim().isEmpty();
+
+            if (!camposLlenos) {
+                bGuardar.setEnabled(false);
+                return;
+            }
+
+            // Validar que año y duración sean números válidos
+            int anio = Integer.parseInt(tAnio.getText().trim());
+            int duracion = Integer.parseInt(tDuracion.getText().trim());
+
+            // Validar rangos
+            int anioActual = java.time.Year.now().getValue();
+            boolean anioValido = anio >= 1888 && anio <= anioActual;
+            boolean duracionValida = duracion > 0 && duracion <= 999;
+
+            // Habilitar botón solo si todo es válido
+            bGuardar.setEnabled(anioValido && duracionValida);
+
+        } catch (NumberFormatException e) {
+            // Si hay error al parsear, deshabilitar el botón
+            bGuardar.setEnabled(false);
+        }
+    }
+    private boolean esPeliculaValida(Pelicula pelicula) {
+        if (pelicula == null) return false;
+
+        if (pelicula.getTitulo() == null || 
+            pelicula.getTitulo().trim().isEmpty() || 
+            pelicula.getTitulo().length() > 50) {
+            return false;
+        }
+        if (pelicula.getDirector() == null || 
+            pelicula.getDirector().trim().isEmpty() || 
+            pelicula.getDirector().length() > 50) {
+            return false;
+        }
+
+        // Año: entre 1888 y año actual
+        int anioActual = java.time.Year.now().getValue();
+        if (pelicula.getAnio() < 1888 || pelicula.getAnio() > anioActual) {
+            return false;
+        }
+
+        // Duración: entre 1 y 999 minutos
+        if (pelicula.getDuracion() <= 0 || pelicula.getDuracion() > 999) {
+            return false;
+        }
+        if (pelicula.getGenero() == null || 
+            pelicula.getGenero().trim().isEmpty() || 
+            pelicula.getGenero().length() > 50) {
+            return false;
+        }
+        if (pelicula.getSinopsis() == null || 
+            pelicula.getSinopsis().trim().isEmpty() || 
+            pelicula.getSinopsis().length() > 500) {
+            return false;
+        }
+
+        return true;
+    }
     
     /**
      * @param args the command line arguments

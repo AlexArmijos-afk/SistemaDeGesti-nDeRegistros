@@ -207,16 +207,18 @@ public class Principal extends javax.swing.JFrame {
     private void bNuevaPeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNuevaPeliActionPerformed
         DetallePelicula ventanaDetallePelicula = new DetallePelicula(this, true);
         ventanaDetallePelicula.setVisible(true);
-
-        if (conectado) {
-            //comparar con la bbdd
-            peliculasBBDD.agregaDesdeListado(ventanaDetallePelicula.getPeliculaEnvio());
-            peliculas = peliculasBBDD.findAll();
-        } else {
-            if (!peliculas.contains(ventanaDetallePelicula.getPeliculaEnvio())) {
-                peliculas.add(ventanaDetallePelicula.getPeliculaEnvio());
+        Pelicula peliculaNueva = ventanaDetallePelicula.getPeliculaEnvio();
+                
+        if(peliculaNueva != null){
+            if (conectado) {
+                //comparar con la bbdd
+                peliculasBBDD.agregaDesdeListado(ventanaDetallePelicula.getPeliculaEnvio());
+                peliculas = peliculasBBDD.findAll();
+            } else {
+                if (!peliculas.contains(ventanaDetallePelicula.getPeliculaEnvio())) {
+                    peliculas.add(ventanaDetallePelicula.getPeliculaEnvio());
+                }
             }
-
         }
 
         cargarLista(peliculas);
@@ -277,7 +279,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         escribirXML(new File("peliculas.xml"));
-        peliculasBBDD.guardarFecha(fecha);
+        if(conectado){
+            peliculasBBDD.guardarFecha(fecha);
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void bExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportarActionPerformed
