@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Peliculas fechaGeneracion="2026-01-27T13:15:04.352688900">
+<Peliculas fechaGeneracion="2026-01-27">
+    <pelicula>
+        <ID>1</ID>
+        <Titulo>hola</Titulo>
+        <Director>jose</Director>
+        <Anio>2001</Anio>
+        <Duracion>345</Duracion>
+        <Genero>sdfgq</Genero>
+        <Sinopsis>wert</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
     <pelicula>
         <ID>2</ID>
         <Titulo>chao</Titulo>
@@ -8,7 +18,7 @@
         <Duracion>536</Duracion>
         <Genero>asd</Genero>
         <Sinopsis>si</Sinopsis>
-        <Poster>D:\2025-2026\AD\SistemaDeGestiónDeRegistros\src\resources\terminator.jpg</Poster>
+        <Poster>null</Poster>
     </pelicula>
     <pelicula>
         <ID>3</ID>
@@ -18,86 +28,26 @@
         <Duracion>745674</Duracion>
         <Genero>gdfss</Genero>
         <Sinopsis>sdfgsdf</Sinopsis>
-        <Poster/>
+        <Poster>null</Poster>
     </pelicula>
     <pelicula>
-        <ID>4</ID>
-        <Titulo>adios</Titulo>
-        <Director>alex</Director>
-        <Anio>2023</Anio>
-        <Duracion>3456</Duracion>
-        <Genero>fgydfh</Genero>
-        <Sinopsis>sgsfdgs</Sinopsis>
-        <Poster/>
-    </pelicula>
-    <pelicula>
-        <ID>5</ID>
-        <Titulo>dumbo</Titulo>
-        <Director>asdf</Director>
-        <Anio>1940</Anio>
-        <Duracion>46</Duracion>
-        <Genero>asdf</Genero>
-        <Sinopsis>asdfasd</Sinopsis>
-        <Poster/>
-    </pelicula>
-    <pelicula>
-        <ID>6</ID>
-        <Titulo>El Padrino</Titulo>
-        <Director>Francis Ford Coppola</Director>
-        <Anio>1972</Anio>
-        <Duracion>175</Duracion>
-        <Genero>Crimen / Drama</Genero>
-        <Sinopsis>La historia de la familia Corleone, una de las más poderosas de la mafia italoamericana, y el ascenso de Michael Corleone en el mundo del crimen organizado.</Sinopsis>
-        <Poster/>
-    </pelicula>
-    <pelicula>
-        <ID>7</ID>
+        <ID>8</ID>
         <Titulo>Forrest Gump</Titulo>
         <Director>Robert Zemeckis</Director>
         <Anio>1994</Anio>
         <Duracion>142</Duracion>
         <Genero>Drama / Romance</Genero>
         <Sinopsis>Forrest Gump, un hombre con una inteligencia limitada pero un gran corazón, vive momentos históricos clave de Estados Unidos mientras persigue a su gran amor.</Sinopsis>
-        <Poster/>
-    </pelicula>
-    <pelicula>
-        <ID>8</ID>
-        <Titulo>Inception</Titulo>
-        <Director>Christopher Nolan</Director>
-        <Anio>2010</Anio>
-        <Duracion>148</Duracion>
-        <Genero>Ciencia ficción / Acción</Genero>
-        <Sinopsis>Un ladrón especializado en robar secretos del subconsciente debe implantar una idea en la mente de un objetivo como último trabajo para recuperar su vida.</Sinopsis>
-        <Poster/>
+        <Poster>null</Poster>
     </pelicula>
     <pelicula>
         <ID>9</ID>
-        <Titulo>Parásitos</Titulo>
-        <Director>Bong Joon-ho</Director>
-        <Anio>2019</Anio>
-        <Duracion>132</Duracion>
-        <Genero>Thriller / Drama</Genero>
-        <Sinopsis>Una familia pobre se infiltra poco a poco en la vida de una familia adinerada, desencadenando una serie de eventos tan ingeniosos como perturbadores.</Sinopsis>
-        <Poster/>
-    </pelicula>
-    <pelicula>
-        <ID>null</ID>
-        <Titulo>nueva peli</Titulo>
-        <Director>lala</Director>
-        <Anio>1234</Anio>
-        <Duracion>12</Duracion>
-        <Genero>asdfa</Genero>
-        <Sinopsis>asdfas</Sinopsis>
-        <Poster/>
-    </pelicula>
-    <pelicula>
-        <ID>null</ID>
-        <Titulo/>
-        <Director/>
-        <Anio>0</Anio>
-        <Duracion>0</Duracion>
-        <Genero/>
-        <Sinopsis/>
-        <Poster/>
+        <Titulo>adios</Titulo>
+        <Director>alex</Director>
+        <Anio>2023</Anio>
+        <Duracion>3456</Duracion>
+        <Genero>fgydfh</Genero>
+        <Sinopsis>sgsfdgs</Sinopsis>
+        <Poster>null</Poster>
     </pelicula>
 </Peliculas>

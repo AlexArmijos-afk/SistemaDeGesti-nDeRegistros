@@ -1,14 +1,12 @@
 package sistemadegestiónderegistros;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -43,32 +41,68 @@ public class Principal extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Principal.class.getName());
     private ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
     private Boolean conectado;
+    private Boolean fechaCorrecta = true;
     private ConeccionBBDD peliculasBBDD;
-    private LocalDateTime fecha = LocalDateTime.now();
+    private LocalDate fecha = LocalDate.now();
 
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
-        
+
         peliculasBBDD = new ConeccionBBDD();
-        
-        conectado = peliculasBBDD.crearBBDD();
-             
-        if(conectado){
-            System.out.println("Conexión a la BBDD exitosa");
-            peliculas = peliculasBBDD.findAll();
-            setTitle("Conectado a la Base de Datos");
-        }else{
-            System.out.println("ERROR al conectarse la BBDD. Se trabajará en local");
-            leerXML(new File("peliculas.xml"));
-            setTitle("Trabajando en local, sin acceso a BBDD.");
+        conectado = peliculasBBDD.crearBBDD();  // Siempre intenta conectar
+
+        boolean cargarDesdeXML = false;
+
+        if (conectado) {
+            LocalDate fechaXML = leerFechaXML(new File("peliculas.xml"));
+            LocalDate fechaBBDD = peliculasBBDD.obtenerFechaBBDD();
+
+            if (fechaXML != null && fechaBBDD != null && fechaXML.isAfter(fechaBBDD)) {
+                Object[] opciones = {"peliculas.xml", "Base de datos"};
+                int respuesta = -1;
+
+                do {
+                    respuesta = JOptionPane.showOptionDialog(
+                            this,
+                            "El XML peliculas tiene una fecha más reciente.\n¿Desea exportarlo o seguir desde la base de datos?",
+                            "Conflicto de fechas",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            opciones,
+                            opciones[0]
+                    );
+                } while (respuesta == -1);
+
+                cargarDesdeXML = (respuesta == 0);
+            }
         }
-        
+
+// Cargar datos según decisión
+        if (conectado) {
+            if (cargarDesdeXML) {
+                // Usuario eligió XML: leerXML() carga en memoria Y sincroniza BBDD automáticamente
+                System.out.println("Cargando desde XML y sincronizando BBDD");
+                leerXML(new File("peliculas.xml"));
+                setTitle("Datos cargados desde XML y sincronizados con BBDD");
+            } else {
+                // Usuario eligió BBDD: cargar solo desde BBDD
+                System.out.println("Cargando desde Base de Datos");
+                peliculas = peliculasBBDD.findAll();
+                setTitle("Conectado a la Base de Datos");
+            }
+        } else {
+            // Sin conexión: solo XML (sin sincronización)
+            System.out.println("Sin conexión BBDD. Trabajando solo con XML");
+            leerXML(new File("peliculas.xml"));
+            setTitle("Trabajando en local, sin acceso a BBDD");
+        }
+
         cargarLista(peliculas);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -208,8 +242,8 @@ public class Principal extends javax.swing.JFrame {
         DetallePelicula ventanaDetallePelicula = new DetallePelicula(this, true);
         ventanaDetallePelicula.setVisible(true);
         Pelicula peliculaNueva = ventanaDetallePelicula.getPeliculaEnvio();
-                
-        if(peliculaNueva != null){
+
+        if (peliculaNueva != null) {
             if (conectado) {
                 //comparar con la bbdd
                 peliculasBBDD.agregaDesdeListado(ventanaDetallePelicula.getPeliculaEnvio());
@@ -229,24 +263,25 @@ public class Principal extends javax.swing.JFrame {
             DetallePelicula p = new DetallePelicula(this, true, peliculas.get(jlPelicula.getSelectedIndex()));
             p.setVisible(true);
             System.out.println(p.getEliminar());
-
-            if (conectado) {
-                if (!p.getEliminar()) {
-                    peliculas.set(jlPelicula.getSelectedIndex(), p.getPeliculaEnvio());
-                    peliculasBBDD.actualizarPelicula(p.getPeliculaEnvio());
-                    cargarLista(peliculas);
+            if (p.getPeliculaEnvio() != null) {
+                if (conectado) {
+                    if (!p.getEliminar()) {
+                        peliculas.set(jlPelicula.getSelectedIndex(), p.getPeliculaEnvio());
+                        peliculasBBDD.actualizarPelicula(p.getPeliculaEnvio());
+                        cargarLista(peliculas);
+                    } else {
+                        peliculas.remove(jlPelicula.getSelectedIndex());
+                        peliculasBBDD.borrarPelicula(p.getPeliculaEnvio());
+                        cargarLista(peliculas);
+                    }
                 } else {
-                    peliculas.remove(jlPelicula.getSelectedIndex());
-                    peliculasBBDD.borrarPelicula(p.getPeliculaEnvio());
-                    cargarLista(peliculas);
-                }
-            } else {
-                if (!p.getEliminar()) {
-                    peliculas.set(jlPelicula.getSelectedIndex(), p.getPeliculaEnvio());
-                    cargarLista(peliculas);
-                } else {
-                    peliculas.remove(jlPelicula.getSelectedIndex());
-                    cargarLista(peliculas);
+                    if (!p.getEliminar()) {
+                        peliculas.set(jlPelicula.getSelectedIndex(), p.getPeliculaEnvio());
+                        cargarLista(peliculas);
+                    } else {
+                        peliculas.remove(jlPelicula.getSelectedIndex());
+                        cargarLista(peliculas);
+                    }
                 }
             }
         }
@@ -257,8 +292,8 @@ public class Principal extends javax.swing.JFrame {
         Pelicula p = peliculas.get(jlPelicula.getSelectedIndex());
         peliculas.remove(jlPelicula.getSelectedIndex());
         cargarLista(peliculas);
-        
-        if(conectado){
+
+        if (conectado) {
             peliculasBBDD.borrarPelicula(p);
         }
     }//GEN-LAST:event_bEliminarActionPerformed
@@ -270,7 +305,7 @@ public class Principal extends javax.swing.JFrame {
         if (respuesta == JFileChooser.APPROVE_OPTION) {
             if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".xml")) {
                 leerXML(selector.getSelectedFile());
-            }else if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".json")) {
+            } else if (selector.getSelectedFile().getName().substring(selector.getSelectedFile().getName().indexOf("."), selector.getSelectedFile().getName().length()).equals(".json")) {
                 leerJSON(selector.getSelectedFile());
             }
             cargarLista(peliculas);
@@ -279,7 +314,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         escribirXML(new File("peliculas.xml"));
-        if(conectado){
+        if (conectado) {
             peliculasBBDD.guardarFecha(fecha);
         }
     }//GEN-LAST:event_formWindowClosing
@@ -287,7 +322,7 @@ public class Principal extends javax.swing.JFrame {
     private void bExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportarActionPerformed
         JFileChooser selector = new JFileChooser(".");
         selector.setSelectedFile(new File("prueba"));
-        
+
         // Crear filtros para cada tipo de archivo
         FileNameExtensionFilter filtroXML = new FileNameExtensionFilter("Archivos XML (*.xml)", "xml");
         FileNameExtensionFilter filtroJSON = new FileNameExtensionFilter("Archivos JSON (*.json)", "json");
@@ -297,9 +332,9 @@ public class Principal extends javax.swing.JFrame {
         selector.addChoosableFileFilter(filtroJSON);
         selector.setFileFilter(filtroXML);
         selector.setAcceptAllFileFilterUsed(false);
-        
+
         int respuesta = selector.showSaveDialog(this);
-        
+
         if (respuesta == JFileChooser.APPROVE_OPTION) {
             File archivoNuevo = selector.getSelectedFile();
             FileNameExtensionFilter filtroSeleccionado = (FileNameExtensionFilter) selector.getFileFilter();
@@ -321,7 +356,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bExportarActionPerformed
 
     private void tBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tBuscarKeyTyped
-        
+
     }//GEN-LAST:event_tBuscarKeyTyped
 
     private void tBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tBuscarKeyReleased
@@ -334,14 +369,13 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tBuscarKeyReleased
 
-    
     public void leerXML(File archivo) {
-    try {
-        if (archivo.exists()) {
+        try {
+            if (archivo.exists()) {
 
-            SAXParserFactory.newInstance().newSAXParser().parse(
-                archivo,
-                new DefaultHandler() {
+                SAXParserFactory.newInstance().newSAXParser().parse(
+                        archivo,
+                        new DefaultHandler() {
 
                     Pelicula actual;
 
@@ -366,14 +400,23 @@ public class Principal extends javax.swing.JFrame {
 
                         buffer.setLength(0); // reset para esta etiqueta
 
-                        if (qName.equalsIgnoreCase("ID")) id = true;
-                        else if (qName.equalsIgnoreCase("Titulo")) titulo = true;
-                        else if (qName.equalsIgnoreCase("Director")) director = true;
-                        else if (qName.equalsIgnoreCase("Anio")) anio = true;
-                        else if (qName.equalsIgnoreCase("Duracion")) duracion = true;
-                        else if (qName.equalsIgnoreCase("Genero")) genero = true;
-                        else if (qName.equalsIgnoreCase("Sinopsis")) sinopsis = true;
-                        else if (qName.equalsIgnoreCase("Poster")) poster = true;   // NUEVO
+                        if (qName.equalsIgnoreCase("ID")) {
+                            id = true;
+                        } else if (qName.equalsIgnoreCase("Titulo")) {
+                            titulo = true;
+                        } else if (qName.equalsIgnoreCase("Director")) {
+                            director = true;
+                        } else if (qName.equalsIgnoreCase("Anio")) {
+                            anio = true;
+                        } else if (qName.equalsIgnoreCase("Duracion")) {
+                            duracion = true;
+                        } else if (qName.equalsIgnoreCase("Genero")) {
+                            genero = true;
+                        } else if (qName.equalsIgnoreCase("Sinopsis")) {
+                            sinopsis = true;
+                        } else if (qName.equalsIgnoreCase("Poster")) {
+                            poster = true;   // NUEVO
+                        }
                     }
 
                     @Override
@@ -385,14 +428,31 @@ public class Principal extends javax.swing.JFrame {
                     public void endElement(String uri, String localName, String qName) throws SAXException {
                         String texto = buffer.toString().trim();
 
-                        if (id) { actual.setId(texto); id = false; }
-                        else if (titulo) { actual.setTitulo(texto); titulo = false; }
-                        else if (director) { actual.setDirector(texto); director = false; }
-                        else if (anio) { actual.setAnio(Integer.parseInt(texto)); anio = false; }
-                        else if (duracion) { actual.setDuracion(Integer.parseInt(texto)); duracion = false; }
-                        else if (genero) { actual.setGenero(texto); genero = false; }
-                        else if (sinopsis) { actual.setSinopsis(texto); sinopsis = false; }
-                        else if (poster) { actual.setPoster(texto); poster = false; } // NUEVO
+                        if (id) {
+                            actual.setId(texto);
+                            id = false;
+                        } else if (titulo) {
+                            actual.setTitulo(texto);
+                            titulo = false;
+                        } else if (director) {
+                            actual.setDirector(texto);
+                            director = false;
+                        } else if (anio) {
+                            actual.setAnio(Integer.parseInt(texto));
+                            anio = false;
+                        } else if (duracion) {
+                            actual.setDuracion(Integer.parseInt(texto));
+                            duracion = false;
+                        } else if (genero) {
+                            actual.setGenero(texto);
+                            genero = false;
+                        } else if (sinopsis) {
+                            actual.setSinopsis(texto);
+                            sinopsis = false;
+                        } else if (poster) {
+                            actual.setPoster(texto);
+                            poster = false;
+                        } // NUEVO
 
                         if (qName.equalsIgnoreCase("pelicula")) {
                             boolean encontrada = false;
@@ -407,125 +467,150 @@ public class Principal extends javax.swing.JFrame {
                                         break;
                                     }
                                 }
-                                if (!encontrada) peliculas.add(actual);
+                                if (!encontrada) {
+                                    peliculas.add(actual);
+                                }
                             }
                             actual = null;
                         }
                     }
                 }
-            );
+                );
 
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al leer el archivo " + archivo.getName());
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al leer el archivo " + archivo.getName());
+            }
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } catch (ParserConfigurationException | SAXException | IOException ex) {
-        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
     }
-}
 
-    
-    
     public void escribirXML(File archivoSalida) {
-    try {
-        File aPeliculas = archivoSalida;
-        if (aPeliculas.createNewFile()) {
-            JOptionPane.showMessageDialog(this, "Archivo " + archivoSalida.getName() + " creado");
+        try {
+            File aPeliculas = archivoSalida;
+            if (aPeliculas.createNewFile()) {
+                JOptionPane.showMessageDialog(this, "Archivo " + archivoSalida.getName() + " creado");
+            }
+
+            Document dpeliculas = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder().newDocument();
+
+            Element raiz = dpeliculas.createElement("Peliculas");
+            raiz.setAttribute("fechaGeneracion", fecha.toString());
+            dpeliculas.appendChild(raiz);
+
+            for (Pelicula p : peliculas) {
+                Element pelicula = dpeliculas.createElement("pelicula");
+                raiz.appendChild(pelicula);
+
+                Element id = dpeliculas.createElement("ID");
+                id.setTextContent(String.valueOf(p.getId()));
+                pelicula.appendChild(id);
+
+                Element titulo = dpeliculas.createElement("Titulo");
+                titulo.setTextContent(p.getTitulo());
+                pelicula.appendChild(titulo);
+
+                Element director = dpeliculas.createElement("Director");
+                director.setTextContent(p.getDirector());
+                pelicula.appendChild(director);
+
+                Element anio = dpeliculas.createElement("Anio");
+                anio.setTextContent(String.valueOf(p.getAnio()));
+                pelicula.appendChild(anio);
+
+                Element duracion = dpeliculas.createElement("Duracion");
+                duracion.setTextContent(String.valueOf(p.getDuracion()));
+                pelicula.appendChild(duracion);
+
+                Element genero = dpeliculas.createElement("Genero");
+                genero.setTextContent(p.getGenero());
+                pelicula.appendChild(genero);
+
+                Element sinopsis = dpeliculas.createElement("Sinopsis");
+                sinopsis.setTextContent(p.getSinopsis());
+                pelicula.appendChild(sinopsis);
+
+                Element poster = dpeliculas.createElement("Poster");           // NUEVO
+                poster.setTextContent(p.getPoster() == null ? "" : p.getPoster());
+                pelicula.appendChild(poster);
+            }
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.transform(new DOMSource(dpeliculas), new StreamResult(aPeliculas));
+
+        } catch (IOException ex) {
+            new JOptionPane("Error al crear el archivo " + archivoSalida.getName(),
+                    JOptionPane.ERROR_MESSAGE).setVisible(true);
+        } catch (ParserConfigurationException | TransformerException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        Document dpeliculas = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().newDocument();
-
-        Element raiz = dpeliculas.createElement("Peliculas");
-        raiz.setAttribute("fechaGeneracion", fecha.toString());
-        dpeliculas.appendChild(raiz);
-
-        for (Pelicula p : peliculas) {
-            Element pelicula = dpeliculas.createElement("pelicula");
-            raiz.appendChild(pelicula);
-
-            Element id = dpeliculas.createElement("ID");
-            id.setTextContent(String.valueOf(p.getId()));
-            pelicula.appendChild(id);
-
-            Element titulo = dpeliculas.createElement("Titulo");
-            titulo.setTextContent(p.getTitulo());
-            pelicula.appendChild(titulo);
-
-            Element director = dpeliculas.createElement("Director");
-            director.setTextContent(p.getDirector());
-            pelicula.appendChild(director);
-
-            Element anio = dpeliculas.createElement("Anio");
-            anio.setTextContent(String.valueOf(p.getAnio()));
-            pelicula.appendChild(anio);
-
-            Element duracion = dpeliculas.createElement("Duracion");
-            duracion.setTextContent(String.valueOf(p.getDuracion()));
-            pelicula.appendChild(duracion);
-
-            Element genero = dpeliculas.createElement("Genero");
-            genero.setTextContent(p.getGenero());
-            pelicula.appendChild(genero);
-
-            Element sinopsis = dpeliculas.createElement("Sinopsis");
-            sinopsis.setTextContent(p.getSinopsis());
-            pelicula.appendChild(sinopsis);
-
-            Element poster = dpeliculas.createElement("Poster");           // NUEVO
-            poster.setTextContent(p.getPoster() == null ? "" : p.getPoster());
-            pelicula.appendChild(poster);
-        }
-
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.transform(new DOMSource(dpeliculas), new StreamResult(aPeliculas));
-
-    } catch (IOException ex) {
-        new JOptionPane("Error al crear el archivo " + archivoSalida.getName(),
-                JOptionPane.ERROR_MESSAGE).setVisible(true);
-    } catch (ParserConfigurationException | TransformerException ex) {
-        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
     }
-}
+
+    public LocalDate leerFechaXML(File archivoXML) {
+        try {
+            // Parsear el documento XML
+            Document documento = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(archivoXML);
+
+            // Obtener el elemento raíz <Peliculas>
+            Element raiz = documento.getDocumentElement();
+
+            // Leer el atributo "fechaGeneracion"
+            String fechaStr = raiz.getAttribute("fechaGeneracion");
+
+            // Convertir String a LocalDate
+            return LocalDate.parse(fechaStr);
+
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 
     public void escribirJSON(File archivoSalida) {
-    try {
-        if (archivoSalida.createNewFile()) {
-            JOptionPane.showMessageDialog(this, "Archivo " + archivoSalida.getName() + " creado");
+        try {
+            if (archivoSalida.createNewFile()) {
+                JOptionPane.showMessageDialog(this, "Archivo " + archivoSalida.getName() + " creado");
+            }
+            ObjectMapper mapeador = new ObjectMapper();
+            mapeador.writeValue(archivoSalida, peliculas);
+        } catch (IOException ex) {
+            System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        ObjectMapper mapeador = new ObjectMapper();
-        mapeador.writeValue(archivoSalida, peliculas);
-    } catch (IOException ex) {
-        System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
     }
-}
 
     public void leerJSON(File archivoEntrada) {
-    if (!archivoEntrada.exists()) {
-        JOptionPane.showMessageDialog(this, "Error al leer el archivo " + archivoEntrada.getName());
-        return;
-    }
-
-    ObjectMapper mapeador = new ObjectMapper();
-    try {
-        List<Pelicula> pelis = mapeador.readValue(
-                archivoEntrada,
-                new com.fasterxml.jackson.core.type.TypeReference<List<Pelicula>>() {}
-        );
-
-        for (Pelicula peliNueva : pelis) {
-            if (conectado) {
-                peliculasBBDD.agregaDesdeListado(peliNueva);
-                peliculas = peliculasBBDD.findAll();
-            } else {
-                if (!peliculas.contains(peliNueva)) peliculas.add(peliNueva);
-            }
+        if (!archivoEntrada.exists()) {
+            JOptionPane.showMessageDialog(this, "Error al leer el archivo " + archivoEntrada.getName());
+            return;
         }
-    } catch (IOException ex) {
-        System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+
+        ObjectMapper mapeador = new ObjectMapper();
+        try {
+            List<Pelicula> pelis = mapeador.readValue(
+                    archivoEntrada,
+                    new com.fasterxml.jackson.core.type.TypeReference<List<Pelicula>>() {
+            }
+            );
+
+            for (Pelicula peliNueva : pelis) {
+                if (conectado) {
+                    peliculasBBDD.agregaDesdeListado(peliNueva);
+                    peliculas = peliculasBBDD.findAll();
+                } else {
+                    if (!peliculas.contains(peliNueva)) {
+                        peliculas.add(peliNueva);
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
-}
-    
+
     public void cargarLista(ArrayList<Pelicula> array) {
         DefaultListModel modelo = new DefaultListModel();
         modelo.setSize(0);
@@ -533,7 +618,7 @@ public class Principal extends javax.swing.JFrame {
 
         jlPelicula.setModel(modelo);
     }
-    
+
     /**
      * @param args the command line arguments
      */

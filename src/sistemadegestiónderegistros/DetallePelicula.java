@@ -29,7 +29,7 @@ public class DetallePelicula extends javax.swing.JDialog {
         bEditar.setVisible(false);
         bEliminar.setVisible(false);
         bGuardar.setEnabled(false);
-        
+
         validarCamposListeners();
     }
 
@@ -44,7 +44,11 @@ public class DetallePelicula extends javax.swing.JDialog {
         tDuracion.setText(peliculaEnvio.getDuracion() + "");
         tGenero.setText(peliculaEnvio.getGenero());
         tSinopsis.setText(peliculaEnvio.getSinopsis());
-        jImagen.setIcon(new ImageIcon(peliculaEnvio.getPoster()));
+        ImageIcon src = new ImageIcon(peliculaEnvio.getPoster());
+        Icon icono = new ImageIcon(src.getImage().getScaledInstance(
+                jImagen.getWidth(), jImagen.getHeight(), java.awt.Image.SCALE_SMOOTH));
+        jImagen.setIcon(icono);
+        jImagen.setText(null);
 
         tTitulo.setDisabledTextColor(Color.BLACK);
         tDirector.setDisabledTextColor(Color.BLACK);
@@ -143,10 +147,10 @@ public class DetallePelicula extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bEliminar)
-                        .addGap(125, 125, 125)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bEditar)
                         .addGap(18, 18, 18)
                         .addComponent(bGuardar))
@@ -222,18 +226,13 @@ public class DetallePelicula extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                        .addComponent(bEliminar)
-                        .addGap(17, 17, 17))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bEditar)
-                            .addComponent(bGuardar)
-                            .addComponent(bCambiarImagen))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(bEditar)
+                    .addComponent(bGuardar)
+                    .addComponent(bCambiarImagen)
+                    .addComponent(bEliminar))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -263,7 +262,7 @@ public class DetallePelicula extends javax.swing.JDialog {
         tDuracion.setEnabled(true);
         tGenero.setEnabled(true);
         tSinopsis.setEnabled(true);
-        
+
         validarFormulario();
     }//GEN-LAST:event_bEditarActionPerformed
 
@@ -273,8 +272,8 @@ public class DetallePelicula extends javax.swing.JDialog {
         int respuesta = selector.showOpenDialog(this);
         if (respuesta == JFileChooser.APPROVE_OPTION) {
             try {
-                peliculaEnvio.setPoster(selector.getSelectedFile().getCanonicalPath());
-                
+                peliculaEnvio.setPoster("./src/resources/"+selector.getSelectedFile().getName());
+
                 ImageIcon src = new ImageIcon(selector.getSelectedFile().getCanonicalPath());
                 Icon icono = new ImageIcon(src.getImage().getScaledInstance(
                         jImagen.getWidth(), jImagen.getHeight(), java.awt.Image.SCALE_SMOOTH));
@@ -287,9 +286,9 @@ public class DetallePelicula extends javax.swing.JDialog {
     }//GEN-LAST:event_bCambiarImagenActionPerformed
 
     public Pelicula getPeliculaEnvio() {
-        if (peliculaEnvio != null && !esPeliculaValida(peliculaEnvio)) {
-        return null;
-    }
+        if (!esPeliculaValida(peliculaEnvio)) {
+            return null;
+        }
         return peliculaEnvio;
     }
 
@@ -300,7 +299,7 @@ public class DetallePelicula extends javax.swing.JDialog {
     public Boolean getEliminar() {
         return eliminar;
     }
-    
+
     private void validarCamposListeners() {
         javax.swing.event.DocumentListener validacionListener = new javax.swing.event.DocumentListener() {
             @Override
@@ -331,12 +330,12 @@ public class DetallePelicula extends javax.swing.JDialog {
     private void validarFormulario() {
         try {
             // Validar que ningún campo esté vacío
-            boolean camposLlenos = !tTitulo.getText().trim().isEmpty() &&
-                                   !tDirector.getText().trim().isEmpty() &&
-                                   !tAnio.getText().trim().isEmpty() &&
-                                   !tDuracion.getText().trim().isEmpty() &&
-                                   !tGenero.getText().trim().isEmpty() &&
-                                   !tSinopsis.getText().trim().isEmpty();
+            boolean camposLlenos = !tTitulo.getText().trim().isEmpty()
+                    && !tDirector.getText().trim().isEmpty()
+                    && !tAnio.getText().trim().isEmpty()
+                    && !tDuracion.getText().trim().isEmpty()
+                    && !tGenero.getText().trim().isEmpty()
+                    && !tSinopsis.getText().trim().isEmpty();
 
             if (!camposLlenos) {
                 bGuardar.setEnabled(false);
@@ -360,17 +359,20 @@ public class DetallePelicula extends javax.swing.JDialog {
             bGuardar.setEnabled(false);
         }
     }
-    private boolean esPeliculaValida(Pelicula pelicula) {
-        if (pelicula == null) return false;
 
-        if (pelicula.getTitulo() == null || 
-            pelicula.getTitulo().trim().isEmpty() || 
-            pelicula.getTitulo().length() > 50) {
+    private boolean esPeliculaValida(Pelicula pelicula) {
+        if (pelicula == null) {
             return false;
         }
-        if (pelicula.getDirector() == null || 
-            pelicula.getDirector().trim().isEmpty() || 
-            pelicula.getDirector().length() > 50) {
+
+        if (pelicula.getTitulo() == null
+                || pelicula.getTitulo().trim().isEmpty()
+                || pelicula.getTitulo().length() > 50) {
+            return false;
+        }
+        if (pelicula.getDirector() == null
+                || pelicula.getDirector().trim().isEmpty()
+                || pelicula.getDirector().length() > 50) {
             return false;
         }
 
@@ -384,20 +386,20 @@ public class DetallePelicula extends javax.swing.JDialog {
         if (pelicula.getDuracion() <= 0 || pelicula.getDuracion() > 999) {
             return false;
         }
-        if (pelicula.getGenero() == null || 
-            pelicula.getGenero().trim().isEmpty() || 
-            pelicula.getGenero().length() > 50) {
+        if (pelicula.getGenero() == null
+                || pelicula.getGenero().trim().isEmpty()
+                || pelicula.getGenero().length() > 50) {
             return false;
         }
-        if (pelicula.getSinopsis() == null || 
-            pelicula.getSinopsis().trim().isEmpty() || 
-            pelicula.getSinopsis().length() > 500) {
+        if (pelicula.getSinopsis() == null
+                || pelicula.getSinopsis().trim().isEmpty()
+                || pelicula.getSinopsis().length() > 500) {
             return false;
         }
 
         return true;
     }
-    
+
     /**
      * @param args the command line arguments
      */
