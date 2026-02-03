@@ -61,13 +61,13 @@ public class Principal extends javax.swing.JFrame {
             LocalDate fechaBBDD = peliculasBBDD.obtenerFechaBBDD();
 
             if (fechaXML != null && fechaBBDD != null && fechaXML.isAfter(fechaBBDD)) {
-                Object[] opciones = {"peliculas.xml", "Base de datos"};
+                Object[] opciones = {"Actualizar datos modificados en local", "Mantener Base de Datos"};
                 int respuesta = -1;
 
                 do {
                     respuesta = JOptionPane.showOptionDialog(
                             this,
-                            "El XML peliculas tiene una fecha más reciente.\n¿Desea exportarlo o seguir desde la base de datos?",
+                            "Se observan cambios guardados en local que no están registrados en la Base de Datos. \n¿Desea actualizar los cambios realizados o mantener información de la base de datos original?",
                             "Conflicto de fechas",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,

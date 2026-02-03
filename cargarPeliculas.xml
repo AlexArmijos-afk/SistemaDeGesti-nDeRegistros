@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Peliculas fechaGeneracion="2026-02-03">
+    <pelicula>
+        <ID>1</ID>
+        <Titulo>hola</Titulo>
+        <Director>jose</Director>
+        <Anio>2001</Anio>
+        <Duracion>345</Duracion>
+        <Genero>sdfgq</Genero>
+        <Sinopsis>wert</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>2</ID>
+        <Titulo>chao</Titulo>
+        <Director>pedro</Director>
+        <Anio>2004</Anio>
+        <Duracion>536</Duracion>
+        <Genero>asd</Genero>
+        <Sinopsis>si</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>3</ID>
+        <Titulo>muerte</Titulo>
+        <Director>josefito</Director>
+        <Anio>2054</Anio>
+        <Duracion>745674</Duracion>
+        <Genero>gdfss</Genero>
+        <Sinopsis>sdfgsdf</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>4</ID>
+        <Titulo>Forrest Gump</Titulo>
+        <Director>Robert Zemeckis</Director>
+        <Anio>1994</Anio>
+        <Duracion>142</Duracion>
+        <Genero>Drama / Romance</Genero>
+        <Sinopsis>Forrest Gump, un hombre con una inteligencia limitada pero un gran corazón, vive momentos históricos clave de Estados Unidos mientras persigue a su gran amor.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>5</ID>
+        <Titulo>adios</Titulo>
+        <Director>alex</Director>
+        <Anio>2023</Anio>
+        <Duracion>3456</Duracion>
+        <Genero>fgydfh</Genero>
+        <Sinopsis>sgsfdgs</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+</Peliculas>

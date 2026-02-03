@@ -1,0 +1,102 @@
+[
+  {
+    "titulo": "Forrest Gump",
+    "director": "Robert Zemeckis",
+    "anio": 1994,
+    "id": "1",
+    "duracion": 142,
+    "genero": "Drama / Romance",
+    "sinopsis": "Forrest Gump, un hombre con una inteligencia limitada pero un gran corazón, vive momentos históricos clave mientras persigue a su gran amor.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "El padrino",
+    "director": "Francis Ford Coppola",
+    "anio": 1972,
+    "id": "2",
+    "duracion": 175,
+    "genero": "Crimen / Drama",
+    "sinopsis": "El patriarca de una familia mafiosa transfiere el control del imperio criminal a su hijo, que no quería ese destino.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "Pulp Fiction",
+    "director": "Quentin Tarantino",
+    "anio": 1994,
+    "id": "3",
+    "duracion": 154,
+    "genero": "Crimen / Drama",
+    "sinopsis": "Historias cruzadas de criminales en Los Ángeles que mezclan violencia, humor negro y diálogos memorables.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "El caballero oscuro",
+    "director": "Christopher Nolan",
+    "anio": 2008,
+    "id": "4",
+    "duracion": 152,
+    "genero": "Acción / Crimen / Drama",
+    "sinopsis": "Batman se enfrenta a un enemigo impredecible que busca desestabilizar Gotham y poner a prueba sus límites.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "Interestelar",
+    "director": "Christopher Nolan",
+    "anio": 2014,
+    "id": "5",
+    "duracion": 169,
+    "genero": "Ciencia ficción / Drama",
+    "sinopsis": "Un grupo de exploradores viaja más allá de nuestra galaxia para buscar un nuevo hogar para la humanidad.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "Matrix",
+    "director": "Lana Wachowski, Lilly Wachowski",
+    "anio": 1999,
+    "id": "6",
+    "duracion": 136,
+    "genero": "Acción / Ciencia ficción",
+    "sinopsis": "Un programador descubre que la realidad es una simulación y se une a la rebelión contra sus controladores.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "Gladiator",
+    "director": "Ridley Scott",
+    "anio": 2000,
+    "id": "7",
+    "duracion": 155,
+    "genero": "Acción / Drama / Historia",
+    "sinopsis": "Un general romano traicionado regresa como gladiador para buscar justicia contra el emperador corrupto.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "La La Land",
+    "director": "Damien Chazelle",
+    "anio": 2016,
+    "id": "8",
+    "duracion": 128,
+    "genero": "Musical / Romance / Drama",
+    "sinopsis": "Una actriz y un músico persiguen sus sueños en Los Ángeles mientras su relación se pone a prueba.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "Parásitos",
+    "director": "Bong Joon-ho",
+    "anio": 2019,
+    "id": "9",
+    "duracion": 132,
+    "genero": "Thriller / Drama",
+    "sinopsis": "Una familia sin recursos se infiltra en la vida de una familia rica, desatando una cadena de consecuencias.",
+    "poster": "./src/resources/terminator.jpg"
+  },
+  {
+    "titulo": "El viaje de Chihiro",
+    "director": "Hayao Miyazaki",
+    "anio": 2001,
+    "id": "10",
+    "duracion": 125,
+    "genero": "Animación / Fantasía / Aventura",
+    "sinopsis": "Una niña entra en un mundo mágico y debe encontrar la forma de salvar a sus padres y volver a casa.",
+    "poster": "./src/resources/terminator.jpg"
+  }
+]

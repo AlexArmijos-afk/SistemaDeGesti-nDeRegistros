@@ -1,53 +1,103 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Peliculas fechaGeneracion="2026-01-27">
+<Peliculas fechaGeneracion="2026-02-03">
     <pelicula>
         <ID>1</ID>
-        <Titulo>hola</Titulo>
-        <Director>jose</Director>
-        <Anio>2001</Anio>
-        <Duracion>345</Duracion>
-        <Genero>sdfgq</Genero>
-        <Sinopsis>wert</Sinopsis>
-        <Poster>./src/resources/terminator.jpg</Poster>
-    </pelicula>
-    <pelicula>
-        <ID>2</ID>
-        <Titulo>chao</Titulo>
-        <Director>pedro</Director>
-        <Anio>2004</Anio>
-        <Duracion>536</Duracion>
-        <Genero>asd</Genero>
-        <Sinopsis>si</Sinopsis>
-        <Poster>null</Poster>
-    </pelicula>
-    <pelicula>
-        <ID>3</ID>
-        <Titulo>muerte</Titulo>
-        <Director>josefito</Director>
-        <Anio>2054</Anio>
-        <Duracion>745674</Duracion>
-        <Genero>gdfss</Genero>
-        <Sinopsis>sdfgsdf</Sinopsis>
-        <Poster>null</Poster>
-    </pelicula>
-    <pelicula>
-        <ID>8</ID>
         <Titulo>Forrest Gump</Titulo>
         <Director>Robert Zemeckis</Director>
         <Anio>1994</Anio>
         <Duracion>142</Duracion>
         <Genero>Drama / Romance</Genero>
-        <Sinopsis>Forrest Gump, un hombre con una inteligencia limitada pero un gran corazón, vive momentos históricos clave de Estados Unidos mientras persigue a su gran amor.</Sinopsis>
-        <Poster>null</Poster>
+        <Sinopsis>Forrest Gump, un hombre con una inteligencia limitada pero un gran corazón, vive momentos históricos clave mientras persigue a su gran amor.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>2</ID>
+        <Titulo>El padrino</Titulo>
+        <Director>Francis Ford Coppola</Director>
+        <Anio>1972</Anio>
+        <Duracion>175</Duracion>
+        <Genero>Crimen / Drama</Genero>
+        <Sinopsis>El patriarca de una familia mafiosa transfiere el control del imperio criminal a su hijo, que no quería ese destino.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>3</ID>
+        <Titulo>Pulp Fiction</Titulo>
+        <Director>Quentin Tarantino</Director>
+        <Anio>1994</Anio>
+        <Duracion>154</Duracion>
+        <Genero>Crimen / Drama</Genero>
+        <Sinopsis>Historias cruzadas de criminales en Los Ángeles que mezclan violencia, humor negro y diálogos memorables.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>4</ID>
+        <Titulo>El caballero oscuro</Titulo>
+        <Director>Christopher Nolan</Director>
+        <Anio>2008</Anio>
+        <Duracion>152</Duracion>
+        <Genero>Acción / Crimen / Drama</Genero>
+        <Sinopsis>Batman se enfrenta a un enemigo impredecible que busca desestabilizar Gotham y poner a prueba sus límites.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>5</ID>
+        <Titulo>Interestelar</Titulo>
+        <Director>Christopher Nolan</Director>
+        <Anio>2014</Anio>
+        <Duracion>169</Duracion>
+        <Genero>Ciencia ficción / Drama</Genero>
+        <Sinopsis>Un grupo de exploradores viaja más allá de nuestra galaxia para buscar un nuevo hogar para la humanidad.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>6</ID>
+        <Titulo>Matrix</Titulo>
+        <Director>Lana Wachowski, Lilly Wachowski</Director>
+        <Anio>1999</Anio>
+        <Duracion>136</Duracion>
+        <Genero>Acción / Ciencia ficción</Genero>
+        <Sinopsis>Un programador descubre que la realidad es una simulación y se une a la rebelión contra sus controladores.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>7</ID>
+        <Titulo>Gladiator</Titulo>
+        <Director>Ridley Scott</Director>
+        <Anio>2000</Anio>
+        <Duracion>155</Duracion>
+        <Genero>Acción / Drama / Historia</Genero>
+        <Sinopsis>Un general romano traicionado regresa como gladiador para buscar justicia contra el emperador corrupto.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>8</ID>
+        <Titulo>La La Land</Titulo>
+        <Director>Damien Chazelle</Director>
+        <Anio>2016</Anio>
+        <Duracion>128</Duracion>
+        <Genero>Musical / Romance / Drama</Genero>
+        <Sinopsis>Una actriz y un músico persiguen sus sueños en Los Ángeles mientras su relación se pone a prueba.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
     </pelicula>
     <pelicula>
         <ID>9</ID>
-        <Titulo>adios</Titulo>
-        <Director>alex</Director>
-        <Anio>2023</Anio>
-        <Duracion>3456</Duracion>
-        <Genero>fgydfh</Genero>
-        <Sinopsis>sgsfdgs</Sinopsis>
-        <Poster>null</Poster>
+        <Titulo>Parásitos</Titulo>
+        <Director>Bong Joon-ho</Director>
+        <Anio>2019</Anio>
+        <Duracion>132</Duracion>
+        <Genero>Thriller / Drama</Genero>
+        <Sinopsis>Una familia sin recursos se infiltra en la vida de una familia rica, desatando una cadena de consecuencias.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
+    </pelicula>
+    <pelicula>
+        <ID>10</ID>
+        <Titulo>El viaje de Chihiro</Titulo>
+        <Director>Hayao Miyazaki</Director>
+        <Anio>2001</Anio>
+        <Duracion>125</Duracion>
+        <Genero>Animación / Fantasía / Aventura</Genero>
+        <Sinopsis>Una niña entra en un mundo mágico y debe encontrar la forma de salvar a sus padres y volver a casa.</Sinopsis>
+        <Poster>./src/resources/terminator.jpg</Poster>
     </pelicula>
 </Peliculas>

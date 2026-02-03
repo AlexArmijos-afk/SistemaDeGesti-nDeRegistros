@@ -33,12 +33,12 @@ public class ConeccionBBDD {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "root");
             stmt = conexion.createStatement();
-            int executeUpdate = stmt.executeUpdate("create database if not exists peliculas");
-            int executeUpdate1 = stmt.executeUpdate("use peliculas");
-            int executeUpdate2 = stmt.executeUpdate("create table if not exists pelicula (titulo varchar(50), director varchar(50), anio year,id integer primary key auto_increment not null, duracion integer, genero varchar(50), sinopsis varchar(500), poster varchar(500));");
-            int executeUpdate3 = stmt.executeUpdate("create table if not exists fecha (ultimaActualizacion date);");
+            int executeUpdate = stmt.executeUpdate("create database if not exists armijos_moraga");
+            int executeUpdate1 = stmt.executeUpdate("use armijos_moraga");
+            int executeUpdate2 = stmt.executeUpdate("create table if not exists peliculas (titulo varchar(50), director varchar(50), anio year,id integer primary key auto_increment not null, duracion integer, genero varchar(50), sinopsis varchar(500), poster varchar(500));");
+            int executeUpdate3 = stmt.executeUpdate("create table if not exists fechas (ultimaActualizacion date);");
             // Solo insertar fecha si la tabla está vacía (primera vez)
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM fecha");
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM fechas");
             if (rs.next() && rs.getInt(1) == 0) {
                 guardarFecha(LocalDate.now());  // Primera inicialización
             }
@@ -56,7 +56,7 @@ public class ConeccionBBDD {
     public ArrayList<Pelicula> findAll() {
         peliculas.clear();
         try {
-            rs = stmt.executeQuery("select * from pelicula");
+            rs = stmt.executeQuery("select * from peliculas");
 
             while (rs.next()) {
                 Pelicula pelicula = new Pelicula(rs.getString("titulo"), rs.getString("director"), rs.getInt("anio"), rs.getString("id"), rs.getInt("duracion"), rs.getString("genero"), rs.getString("sinopsis"), rs.getString("poster"));
@@ -84,7 +84,7 @@ public class ConeccionBBDD {
 
     public boolean guardarFecha(LocalDate fecha) {
         try {
-            int rs = stmt.executeUpdate("INSERT INTO fecha (`ultimaActualizacion`) VALUES ('" + fecha + "')");
+            int rs = stmt.executeUpdate("INSERT INTO fechas (`ultimaActualizacion`) VALUES ('" + fecha + "')");
             return true;
         } catch (SQLException ex) {
             System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -95,7 +95,7 @@ public class ConeccionBBDD {
     public LocalDate obtenerFechaBBDD() {
         try {
             // Consultar la última fecha guardada (asume tabla con un solo registro o usa ORDER BY/LIMIT)
-            ResultSet rs = stmt.executeQuery("SELECT ultimaActualizacion FROM fecha ORDER BY ultimaActualizacion DESC LIMIT 1");
+            ResultSet rs = stmt.executeQuery("SELECT ultimaActualizacion FROM fechas ORDER BY ultimaActualizacion DESC LIMIT 1");
 
             if (rs.next()) {
                 // Obtener la fecha como String (MySQL devuelve formato yyyy-MM-dd)
@@ -114,7 +114,7 @@ public class ConeccionBBDD {
 
     public boolean borrarPelicula(Pelicula pelicula) {
         try {
-            int executeUpdate = stmt.executeUpdate("DELETE FROM `peliculas`.`pelicula` WHERE (`id` = '" + pelicula.getId() + "')");
+            int executeUpdate = stmt.executeUpdate("DELETE FROM `armijos_moraga`.`peliculas` WHERE (`id` = '" + pelicula.getId() + "')");
             return true;
         } catch (SQLException ex) {
             System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -124,7 +124,7 @@ public class ConeccionBBDD {
 
     public boolean insertarPelicula(Pelicula pelicula) {
         try {
-            int rs = stmt.executeUpdate("INSERT INTO pelicula (`titulo`, `director`, `anio`, `duracion`, `genero`, `sinopsis`, `poster`) VALUES ('" + pelicula.getTitulo() + "', '" + pelicula.getDirector() + "', " + pelicula.getAnio() + ", '" + pelicula.getDuracion() + "', '" + pelicula.getGenero() + "', '" + pelicula.getSinopsis() + "', '" + pelicula.getPoster() + "')");
+            int rs = stmt.executeUpdate("INSERT INTO peliculas (`titulo`, `director`, `anio`, `duracion`, `genero`, `sinopsis`, `poster`) VALUES ('" + pelicula.getTitulo() + "', '" + pelicula.getDirector() + "', " + pelicula.getAnio() + ", '" + pelicula.getDuracion() + "', '" + pelicula.getGenero() + "', '" + pelicula.getSinopsis() + "', '" + pelicula.getPoster() + "')");
             return true;
         } catch (SQLException ex) {
             System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -139,7 +139,7 @@ public class ConeccionBBDD {
 //    }
     public boolean actualizarPelicula(Pelicula pelicula) {
         try {
-            stmt.executeUpdate("UPDATE `pelicula` SET `titulo` = '" + pelicula.getTitulo() + "', `director` = '" + pelicula.getDirector() + "', `anio` = " + pelicula.getAnio() + ", `duracion` = '" + pelicula.getDuracion() + "', `genero` = '" + pelicula.getGenero() + "', `sinopsis` = '" + pelicula.getSinopsis() + "', `poster` = '" + pelicula.getPoster() + "' WHERE (`id` = '" + pelicula.getId() + "')");
+            stmt.executeUpdate("UPDATE `peliculas` SET `titulo` = '" + pelicula.getTitulo() + "', `director` = '" + pelicula.getDirector() + "', `anio` = " + pelicula.getAnio() + ", `duracion` = '" + pelicula.getDuracion() + "', `genero` = '" + pelicula.getGenero() + "', `sinopsis` = '" + pelicula.getSinopsis() + "', `poster` = '" + pelicula.getPoster() + "' WHERE (`id` = '" + pelicula.getId() + "')");
             return true;
         } catch (SQLException ex) {
             System.getLogger(ConeccionBBDD.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
